@@ -3,9 +3,17 @@ const { Schema, model } = require("mongoose");
 // TODO: Please make sure you edit the User model to whatever makes sense in this case
 const userSchema = new Schema(
   {
+    firstName: {
+      type: String,
+      required: true,
+    },
+    lastName:{
+      type: String,
+      required: true,
+    },
     username: {
       type: String,
-      required: false,
+      required: true,
       unique: true,
       trim: true,
     },
@@ -19,6 +27,17 @@ const userSchema = new Schema(
     password: {
       type: String,
       required: true,
+    },
+    profileImage: {
+      type: Image,
+      required: false,
+    },
+    userBio: {
+      type: String,
+      required: false,
+    },
+    userRecipes: {
+      // should referemce recipe model ids
     },
   },
   {
