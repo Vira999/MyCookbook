@@ -37,7 +37,7 @@ const userSchema = new Schema(
       required: false,
     },
     userRecipes: {
-      // should referemce recipe model ids
+      recipes: [{ type: Schema.Types.ObjectId, ref: 'Recipe' }],
     },
   },
   {
