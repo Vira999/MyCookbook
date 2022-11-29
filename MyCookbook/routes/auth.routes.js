@@ -6,7 +6,7 @@ const bcrypt = require("bcrypt");
 const mongoose = require("mongoose");
 
 // How many rounds should bcrypt run the salt (default - 10 rounds)
-const saltRounds = 10;
+const saltRounds = 13;
 
 // Require the User model in order to interact with the database
 const User = require("../models/User.model");
@@ -134,7 +134,7 @@ router.post("/login", isLoggedOut, (req, res, next) => {
           // Remove the password field
           delete req.session.currentUser.password;
 
-          res.redirect("/");
+          res.redirect("/"); // we need to send user id in order to pain the profile page
         })
         .catch((err) => next(err)); // In this case, we send error handling to the error handling middleware.
     })

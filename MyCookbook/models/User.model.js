@@ -29,8 +29,8 @@ const userSchema = new Schema(
       required: true,
     },
     profileImage: {
-      type: Image,
-      required: false,
+      type: String,
+      default: 'https://www.google.com/url?sa=i&url=https%3A%2F%2Ffavpng.com%2Fpng_view%2Favatar-user-profile-avatar-png%2F1LbmB6ng&psig=AOvVaw3rytoHJv-ShBxQJN88QPaS&ust=1669838369253000&source=images&cd=vfe&ved=0CBAQjRxqFwoTCMiGh-qW1PsCFQAAAAAdAAAAABAD'
     },
     userBio: {
       type: String,
