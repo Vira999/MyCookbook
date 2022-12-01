@@ -1,13 +1,21 @@
 <div id="form">
-  <h2>Sign Up</h2>
+  <h2>Sign Up to My Cookbook!</h2>
   <form action="/auth/signup" method="POST">
 
+    <label> First Name
+      <input type="text" name="firstName" placeholder="Bruce" />
+    </label>
+
+    <label> Last Name
+      <input type="text" name="lastName" placeholder="Wayne" />
+    </label>
+
     <label> Username
-      <input type="text" name="username" placeholder="Your username" />
+      <input type="text" name="username" placeholder="TheBatman" />
     </label>
 
     <label> Email
-      <input type="email" name="email" placeholder="Your email" />
+      <input type="email" name="email" placeholder="batman@wayne-corp.com" />
     </label>
 
     <label> Password
