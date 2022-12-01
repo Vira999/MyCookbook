@@ -1,0 +1,10 @@
+<h2>Our Chefs</h2>
+
+<div class="grid">
+    {{#each chefs}}
+    <div>
+        <img src= {{ this.profileImage}}>
+        <h4>{{ this.username }}</h4>
+    </div>
+    {{/each}}
+</div>

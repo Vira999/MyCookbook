@@ -2,6 +2,12 @@ const express = require('express');
 const User = require('../models/User.model');
 const router = express.Router();
 
+router.get("/chefs/", (req, res) => {
+    User.find()
+    .then (allChefs => res.render('../views/chefs.hbs', { chefs: allChefs}))
+    .catch(err => res.send(err))
+});
+
 router.get("/chefs/:id", (req, res) => {
     const userId = req.params.id;
   
