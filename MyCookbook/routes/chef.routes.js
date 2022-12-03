@@ -1,5 +1,6 @@
 const express = require('express');
 const User = require('../models/User.model');
+const isSameChef = require('../middleware/isSameChef');
 const router = express.Router();
 
 router.get("/chefs/", (req, res) => {
@@ -9,10 +10,10 @@ router.get("/chefs/", (req, res) => {
 });
 
 router.get("/chefs/:id", (req, res) => {
-    const userId = req.params.id;
+    const chefId = req.params.id;
   
     User
-    .findById(userId)
+    .findById(chefId)
     .populate({
       path: 'userRecipes',
       populate: {path: 'recipes'}})
