@@ -2,7 +2,7 @@ const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 const data = require('.db/index')
 
-mongoose.connect('mongodb://localhost/MyCookbook')
+mongoose.connect('mongodb+srv://Vira:<01122022>@cluster0.6qjfiiw.mongodb.net/?retryWrites=true&w=majority')
   .then(() => {
     console.log('Connected to Mongo!')
     mongoose.connection.db.dropDatabase();
@@ -48,7 +48,7 @@ const recipeSchema = new Schema({
     required: false,
   },
 
-  recipe: {type: String, required: true },
+  ingredients: {type: String, required: true },
 
   comments: [
     {
@@ -58,8 +58,8 @@ const recipeSchema = new Schema({
         date: {
             type: Date,
             default: Date.now
-        },           
-        rating: Number,
+        }           
+       
     },{
         timestamps: true
     }],
