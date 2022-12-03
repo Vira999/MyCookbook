@@ -1,5 +1,7 @@
 const express = require('express');
 const User = require('../models/User.model');
+const isLoggedIn = require('../middleware/isLoggedIn');
+const isLoggedOut = require('../middleware/isLoggedOut');
 const isSameChef = require('../middleware/isSameChef');
 const router = express.Router();
 
@@ -18,7 +20,8 @@ router.get("/chefs/:id", (req, res) => {
       path: 'userRecipes',
       populate: {path: 'recipes'}})
     .then((response) => {
-      res.render("../views/user-profile.hbs", { user: response.data });
+      
+      res.render("../views/user-profile.hbs", { user: response.data }, );
     })
     .catch(error => console.log(error));
   });
