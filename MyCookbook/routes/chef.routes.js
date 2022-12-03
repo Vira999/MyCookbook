@@ -13,6 +13,7 @@ router.get("/chefs/", (req, res) => {
 
 router.get("/chefs/:id", (req, res) => {
     const chefId = req.params.id;
+    const  loggedInUserId = req.session?.currentUser?._id;
   
     User
     .findById(chefId)
@@ -20,8 +21,14 @@ router.get("/chefs/:id", (req, res) => {
       path: 'userRecipes',
       populate: {path: 'recipes'}})
     .then((response) => {
-      
-      res.render("../views/user-profile.hbs", { user: response.data }, );
+      const isSameChef = loggedInUserId === chefId
+      const isNotSameChef = loggedInUserId !== chefId
+      if(isSameChef){
+        res.render("../views/user-profile.hbs", { user: response.data, isSameChef })
+      }
+      else {
+      res.render("../views/user-profile.hbs", { user: response.data, isNotSameChef })
+    }
     })
     .catch(error => console.log(error));
   });
