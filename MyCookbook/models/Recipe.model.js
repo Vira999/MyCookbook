@@ -48,21 +48,15 @@ const recipeSchema = new Schema({
     required: false,
   },
 
-  ingredients: {type: String, required: true },
+  instructions: {type: String, required: true },
 
   comments: [
     {
-      type: mongoose.Schema.Types.ObjectId,
-        username: String,           
-        comment: String,          
-        date: {
-            type: Date,
-            default: Date.now
-        }           
-       
-    },{
-        timestamps: true
-    }],
+        type :mongoose.Schema.Types.ObjectId ,
+        ref:"Comments"                         //"Comments is the Model name"
+    }
+
+    ],
 
   
 });
