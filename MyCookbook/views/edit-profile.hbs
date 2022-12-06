@@ -19,10 +19,10 @@
     </label>
 
     <label> Bio
-    {{#if !this.userBio}}
-      <input type="text" name="userBio" placeholder="Write something about yourself, and let the community know who you are!" />
-    {{else}}
+    {{#if this.userBio}}
       <input type="text" name="userBio" placeholder="{{this.userBio}}" />
+    {{else}}
+      <input type="text" name="userBio" placeholder="Write something about yourself, and let the community know who you are!" />
     {{/if}}
     </label>
 
