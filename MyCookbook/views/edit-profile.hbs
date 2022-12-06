@@ -1,0 +1,36 @@
+<div id="form">
+  <h2>Edit your profile, {{ this.username }}</h2>
+  <form action="/chefs/{{this._id}}/edit" method="POST">
+
+    <label> First Name
+      <input type="text" name="firstName" placeholder="{{this.firstName}}" />
+    </label>
+
+    <label> Last Name
+      <input type="text" name="lastName" placeholder="{{this.lastName}}" />
+    </label>
+
+    <label> Username
+      <input type="text" name="username" placeholder="{{this.username}}" />
+    </label>
+
+    <label> Email
+      <input type="email" name="email" placeholder="{{this.email}}" />
+    </label>
+
+    <label> Bio
+    {{#if !this.userBio}}
+      <input type="text" name="userBio" placeholder="Write something about yourself, and let the community know who you are!" />
+    {{else}}
+      <input type="text" name="userBio" placeholder="{{this.userBio}}" />
+    {{/if}}
+    </label>
+
+    <button type="submit">Update profile</button>
+
+
+    {{#if errorMessage}}
+      <p class="error">{{errorMessage}}</p>
+    {{/if}}
+  </form>
+</div>

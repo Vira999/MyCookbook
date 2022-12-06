@@ -13,7 +13,7 @@ router.get("/chefs/", (req, res) => {
 
 router.get("/chefs/:id", (req, res) => {
     const chefId = req.params.id;
-    const  loggedInUserId = req.session?.currentUser?._id;
+    const loggedInUserId = req.session?.currentUser?._id;
   
     User
     .findById(chefId)
@@ -32,5 +32,22 @@ router.get("/chefs/:id", (req, res) => {
     })
     .catch(error => console.log(error));
   });
+
+  router.get("/chef/:id/edit", (req, res) => {
+    const chefId = req.params.id;
+    const loggedInUserId = req.session?.currentUser?._id;
+    const isSameChef = loggedInUserId === chefId;
+
+    if(!isSameChef){
+      res.render("/");
+    }
+    else {
+      User
+      .findById(chefId)
+      .then((chef) => {
+        res.render("../views/edit-profile.hbs", { chef })
+      })
+    }
+  })
 
   module.exports = router;

@@ -3,7 +3,7 @@
     <h2>Welcome, {{ user.username }}!</h2>
     <p>{{ user.userBio }}</p>
     <div>
-        <a href="edit-profile"><button class="edit-btn" type="button">Edit Profile</button></a>
+        <a href="/edit-profile"><button class="edit-btn" type="button">Edit Profile</button></a>
     </div>
 </div>
 
@@ -11,7 +11,7 @@
     {{#each user.userRecipes}}
     <div style="background-image: {{ this.image }}">
         <h4>{{ this.title }}</h4>
-        <a href="recipe-detail">Read Recipe</a>
+        <a href="/recipe">Read Recipe</a>
     </div>
     {{/each}}
 </div>
