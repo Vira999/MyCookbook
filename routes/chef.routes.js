@@ -40,7 +40,7 @@ router.get("/chefs/:id", (req, res) => {
     const isSameChef = loggedInUserId === chefId;
 
     if(!isSameChef){
-      res.render("/");
+      res.render(`/chef/${chefId}`);
     }
     else {
       User
@@ -58,11 +58,16 @@ router.get("/chefs/:id", (req, res) => {
     const { firstName, lastName, username, userBio }  = req.body;
     const { path } = req.file;
 
-    User.findByIdAndUpdate(chefId, { firstName, lastName, username, userBio, profileImage: path }, {new:true})
+    if(isSameChef){
+      User.findByIdAndUpdate(chefId, { firstName, lastName, username, userBio, profileImage: path }, {new:true})
         .then(() => {
           res.redirect('../views/chefs.hbs')
         })
         .catch(err => console.error(err))
+    }
+    else {
+      res.render(`/chef/${chefId}`)
+    }
    }
  )
 
