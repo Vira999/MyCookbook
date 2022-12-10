@@ -1,0 +1,59 @@
+<html lang="en">
+
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>{{appTitle}}</title>
+    <link rel="stylesheet" href="/stylesheets/style.css" />
+  </head>
+
+  <body>
+<head>
+    <meta charset="utf-8">
+    <title>MyCookbook</title>
+    
+    <link rel="stylesheet" href="/MyCookbook/public/stylesheets/style.css">
+</head>
+
+<body>
+
+<nav class="navbar" style=" background-color: #FFD700;">
+    <div class="navbar-main" >
+            <ul class="navbar-nav">
+                <li class="nav-item-head">
+                    <a class="nav-link" href="/">Home</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/chefs">Our Chefs</a>
+                </li>
+            </ul>
+    </div>
+     <div class="navbar-right">
+        {{#if loggedInNavigation}}
+            <ul class="navbar-nav">
+                <li class="nav-item-head">
+                    <a class="nav-link" href="/chefs/{{userId}}">My Profile</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/logout">Log-out</a>
+                </li>
+            </ul>
+        {{else}}
+        <ul class="navbar-nav">
+                <li class="nav-item-head">
+                    <a class="nav-link" href="/login">Log-in</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/signup">Sign Up</a>
+                </li>
+            </ul>
+        {{/if}}
+    </div>
+</nav>
+    {{{body}}}
+
+    <script src="/MyCookbook/public/js/script.js"></script>
+  </body>
+
+</html>
