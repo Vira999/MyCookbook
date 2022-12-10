@@ -3,6 +3,7 @@ const User = require('../models/User.model');
 const isLoggedIn = require('../middleware/isLoggedIn');
 const isLoggedOut = require('../middleware/isLoggedOut');
 const isSameChef = require('../middleware/isSameChef');
+const fileUploader = require("../config/cloudinary.config");
 const router = express.Router();
 
 router.get("/chefs/", (req, res) => {
@@ -49,5 +50,22 @@ router.get("/chefs/:id", (req, res) => {
       })
     }
   })
+
+  router.post("/chef/:id/edit", isSameChef, fileUploader.single("imageUrl"), (req, res) => {
+    const chefId = req.params.id;
+    const loggedInUserId = req.session?.currentUser?._id;
+    const isSameChef = loggedInUserId === chefId;
+    const { firstName, lastName, username, userBio }  = req.body;
+    const { path } = req.file;
+
+    User.findByIdAndUpdate(chefId, { firstName, lastName, username, userBio, profileImage: path }, {new:true})
+        .then(() => {
+          res.redirect('../views/chefs.hbs')
+        })
+        .catch(err => console.error(err))
+   }
+ )
+
+
 
   module.exports = router;
