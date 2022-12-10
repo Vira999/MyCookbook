@@ -1,9 +1,17 @@
 <div>
     <img src= {{ user.profileImage}}>
-    <h2>Welcome, {{ user.username }}!</h2>
+    <h2>
+        {{#if isSameChef}}
+        Welcome, {{ user.username }}!
+        {{else}}
+        Welcome to {{user.username}}'s page
+        {{/if}}
+        </h2>
     <p>{{ user.userBio }}</p>
     <div>
+        {{#if isSameChef}}
         <a href="/edit-profile"><button class="edit-btn" type="button">Edit Profile</button></a>
+        {{/if}}
     </div>
 </div>
 
