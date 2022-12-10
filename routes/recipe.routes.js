@@ -6,7 +6,7 @@ const fileUploader = require("../config/cloudinary.config");
 
 const recipe = require('../models/Recipe.model');
 const comment = require('../models/Comments.model'); 
-const data = require('.db/index'); // maybe dont need
+const data = require('/db/index'); // maybe dont need
 
  
 // GET route to retrieve and display all the recipes
