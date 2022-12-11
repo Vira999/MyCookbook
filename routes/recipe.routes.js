@@ -1,12 +1,11 @@
 const express = require('express');
 const router = express.Router();
 
-const { isLoggedIn, isOwner } = require('../middleware/')//add file where located
+const isLoggedIn = require('../middleware/isLoggedIn')//add file where located
 const fileUploader = require("../config/cloudinary.config");
 
 const recipe = require('../models/Recipe.model');
 const comment = require('../models/Comments.model'); 
-const data = require('/db/index'); // maybe dont need
 
  
 // GET route to retrieve and display all the recipes
@@ -89,12 +88,11 @@ router.post('/recipes/:recipeId/delete', isLoggedIn, (req, res, next) => {
 
 router.get('/comments/:id', (req, res) => {
  
-    Comment.findById(req.params.id).then(comment => {
      
-      Comment.find({ commentId: req.params.id }).then(comments => {
-       
-        res.render('comments-show', { comments: comments })
-      })
+      Comment.find({ recipeId: req.params.id }).then(comments => {
+       console.log(comments);
+        res.render(`/views/comments-show.hbs`, { comments: comments })
+
     }).catch((err) => {
       // catch errors
       console.log(err.message)
