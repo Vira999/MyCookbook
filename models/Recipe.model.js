@@ -1,6 +1,5 @@
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
-const data = require('.db/index')
 
 mongoose.connect('mongodb+srv://Vira:<01122022>@cluster0.6qjfiiw.mongodb.net/?retryWrites=true&w=majority')
   .then(() => {
@@ -44,7 +43,7 @@ const recipeSchema = new Schema({
   createdDate: { type: Date, default: Date.now },
   
   image: {
-    type: Image,
+    type: String,
     required: false,
   },
 
