@@ -4,7 +4,7 @@ const recipe = require('../models/Recipe.model');
 const router = express.Router();
 
 /* GET home page */
-router.get("/", (req, res, next) => {
+router.get("/", (req, res) => {
   Recipe
   .find()
   .populate("creator")
