@@ -1,7 +1,7 @@
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
-mongoose.connect('mongodb+srv://Vira:<01122022>@cluster0.6qjfiiw.mongodb.net/?retryWrites=true&w=majority')
+mongoose.connect('mongodb+srv://Mironhack2:13122022@cluster0.rwzn1qh.mongodb.net/MyCookbook?retryWrites=true&w=majority')
   .then(() => {
     console.log('Connected to Mongo!')
     mongoose.connection.db.dropDatabase();
