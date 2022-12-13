@@ -12,7 +12,7 @@ module.exports = app => {
       },
       store: new MongoStore({
 
-        mongoUrl: 'mongodb+srv://Vira:01122022@cluster0.6qjfiiw.mongodb.net/MyCookbook?retryWrites=true&w=majority',
+        mongoUrl: process.env.MONGODB_URI,
 
         ttl: 60 * 60 * 24 // 60sec * 60min * 24h => 1 day      
       })
