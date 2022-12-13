@@ -32,9 +32,9 @@ const recipeSchema = new Schema({
   
 });
 
-recipeSchema.index({ title: 'text', ingredients: 'text'});
+//recipeSchema.index({ title: 'text', ingredients: 'text'});
 
-const Recipe = model("Recipe", recipeSchema);
+const Recipe = mongoose.model("Recipe", recipeSchema);
 
 module.exports = Recipe;
 
