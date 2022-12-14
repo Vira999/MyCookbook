@@ -1,5 +1,5 @@
 const express = require('express');
-const RecipeModel = require('../models/Recipe.model');
+//const RecipeModel = require('../models/Recipe.model');
 const Recipe = require('../models/Recipe.model');
 const router = express.Router();
 
@@ -7,9 +7,16 @@ const router = express.Router();
 router.get("/", (req, res) => {
   Recipe
   .find()
-  .populate("creator")
+  .populate("title creator image")
+  .populate({
+    path: 'creator',
+    populate:{
+      path: 'username',
+      model: 'User',
+    }
+  })
   .then(recipes => {
-    res.render("/views/index.hbs", { recipes })
+    res.render("index", { recipes })
   })
 });
 
