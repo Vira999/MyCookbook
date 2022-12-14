@@ -1,7 +1,8 @@
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
+const data = require('.db/index')
 
-mongoose.connect('mongodb+srv://Mironhack2:13122022@cluster0.rwzn1qh.mongodb.net/MyCookbook?retryWrites=true&w=majority')
+mongoose.connect('mongodb+srv://Vira:<01122022>@cluster0.6qjfiiw.mongodb.net/?retryWrites=true&w=majority')
   .then(() => {
     console.log('Connected to Mongo!')
     mongoose.connection.db.dropDatabase();
@@ -39,11 +40,12 @@ const recipeSchema = new Schema({
     type: mongoose.Schema.Types.ObjectId,
     ref:'User'
 },
+  imageURL:{type: String },
 
   createdDate: { type: Date, default: Date.now },
   
   image: {
-    type: String,
+    type: Image,
     required: false,
   },
 
@@ -60,9 +62,8 @@ const recipeSchema = new Schema({
   
 });
 
-//recipeSchema.index({ title: 'text', ingredients: 'text'});
+recipeSchema.index({ title: 'text', ingredients: 'text'});
 
-const Recipe = mongoose.model("Recipe", recipeSchema);
 
-module.exports = Recipe;
+module.exports = mongoose.model('Recipe', recipeSchema);
 
