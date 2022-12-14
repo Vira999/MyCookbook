@@ -8,7 +8,7 @@ const mongoose = require("mongoose");
 const MONGO_URI =
   "mongodb+srv://Mironhack2:13122022@cluster0.rwzn1qh.mongodb.net/MyCookbook?retryWrites=true&w=majority"
 mongoose
-  .connect(MONGO_URI)
+  .connect(process.env.MONGODB_URI)
   .then((x) => {
     const databaseName = x.connections[0].name;
     console.log(`Connected to Mongo! Database name: "${databaseName}"`);

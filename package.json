@@ -1,5 +1,5 @@
 {
-  "name": "MyCookbook",
+  "name": "mycookbook",
   "version": "0.0.0",
   "private": true,
   "scripts": {
@@ -24,5 +24,22 @@
   },
   "devDependencies": {
     "nodemon": "^2.0.20"
-  }
+  },
+  "main": "app.js",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Vira999/Project-2-Ironhack-Bootcamp.git"
+  },
+  "keywords": [
+    "cookbook",
+    "project",
+    "2"
+  ],
+  "author": "vira and miguel",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Vira999/Project-2-Ironhack-Bootcamp/issues"
+  },
+  "homepage": "https://github.com/Vira999/Project-2-Ironhack-Bootcamp#readme",
+  "description": ""
 }
