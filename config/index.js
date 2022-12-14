@@ -27,7 +27,7 @@ const MongoStore = require("connect-mongo");
 
 // Connects the mongo uri to maintain the same naming structure
 const MONGO_URI =
-  process.env.MONGODB_URI || "mongodb+srv://Vira:<01122022>@cluster0.6qjfiiw.mongodb.net/?retryWrites=true&w=majority";
+  process.env.MONGODB_URI || 'mongodb+srv://Mironhack2:14122022@cluster0.rwzn1qh.mongodb.net/MyCookbook?retryWrites=true&w=majority';
 
 // Middleware configuration
 module.exports = (app) => {
