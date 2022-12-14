@@ -51,7 +51,7 @@ router.post("/signup", (req, res) => {
       return User.create({ firstName, lastName, username, email, password: hashedPassword });
     })
     .then(() => {
-      res.redirect("/auth/login");
+      res.redirect("/login");
     })
     .catch((error) => {
       if (error instanceof mongoose.Error.ValidationError) {
