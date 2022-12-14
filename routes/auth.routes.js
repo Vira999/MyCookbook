@@ -25,22 +25,22 @@ router.post("/signup", (req, res) => {
   const { firstName, lastName, username, email, password } = req.body;
 
   // Check that username, email, and password are provided
-  if (firstName === "" || lastName === "" || username === "" || email === "" || password === "") {
-    res.status(400).render("auth/signup", {
-      errorMessage:
-        "All fields are mandatory. Please provide your First Name, Last Name, Username, Email and Password.",
-    });
+  // if (firstName === "" || lastName === "" || username === "" || email === "" || password === "") {
+  //   res.status(400).render("auth/signup", {
+  //     errorMessage:
+  //       "All fields are mandatory. Please provide your First Name, Last Name, Username, Email and Password.",
+  //   });
 
-    return;
-  }
+  //   return;
+  // }
 
-  if (password.length < 6) {
-    res.status(400).render("auth/signup", {
-      errorMessage: "Your password needs to be at least 6 characters long.",
-    });
+  // if (password.length < 6) {
+  //   res.status(400).render("auth/signup", {
+  //     errorMessage: "Your password needs to be at least 6 characters long.",
+  //   });
 
-    return;
-  }
+  //   return;
+  // }
 
   // Create a new user - start by hashing the password
   bcrypt
