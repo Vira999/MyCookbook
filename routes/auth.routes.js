@@ -23,7 +23,7 @@ router.get("/signup", isLoggedOut, (req, res) => {
 });
 
 // POST /auth/signup
-router.post("/signup", fileUploader.single("imageUrl"), async (req, res, next) => {
+router.post("/auth/signup", fileUploader.single("imageUrl"), async (req, res, next) => {
   const { firstName, lastName, username, email, password } = req.body;
   const { path } = req.file;
 
@@ -35,7 +35,7 @@ router.post("/signup", fileUploader.single("imageUrl"), async (req, res, next) =
     // req.session.currentUser = newUser;
     // const user = newUser;
     // res.redirect('user-profile', { user })
-    res.redirect('auth/login')
+    res.redirect('/auth/login')
   })
 
   
