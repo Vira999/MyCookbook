@@ -15,13 +15,15 @@ const User = require("../models/User.model");
 const isLoggedOut = require("../middleware/isLoggedOut");
 const isLoggedIn = require("../middleware/isLoggedIn");
 
+const fileUploader = require("../config/cloudinary.config");
+
 // GET /auth/signup
 router.get("/signup", isLoggedOut, (req, res) => {
   res.render("auth/signup");
 });
 
 // POST /auth/signup
-router.post("/signup", (req, res) => {
+router.post("/signup", fileUploader.single("imageUrl"), (req, res) => {
   const { firstName, lastName, username, email, password } = req.body;
   const { path } = req.file;
 
@@ -56,12 +58,14 @@ router.post("/signup", (req, res) => {
     })
     .catch((error) => {
       if (error instanceof mongoose.Error.ValidationError) {
-        res.status(500).render("auth/signup", { errorMessage: error.message });
+        res.status(500).render("auth/signup", { errorMessage: error.message })
+        console.log(error);
       } else if (error.code === 11000) {
         res.status(500).render("auth/signup", {
           errorMessage:
             "Username and email need to be unique. Provide a valid username or email.",
-        });
+        })
+        console.log(error);
       } else {
         next(error);
       }
