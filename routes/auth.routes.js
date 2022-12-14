@@ -23,7 +23,7 @@ router.get("/signup", isLoggedOut, (req, res) => {
 });
 
 // POST /auth/signup
-router.post("/auth/signup", async (req, res, next) => {
+router.post("/auth/signup", isLoggedOut, async (req, res, next) => {
   const { firstName, lastName, username, email, password } = req.body;
 
   const passwordHash = await bcrypt.hash(password,saltRounds);
@@ -31,10 +31,10 @@ router.post("/auth/signup", async (req, res, next) => {
   User
   .create({ firstName, lastName, username, email, passwordHash })
   .then((newUser) => {
-    // req.session.currentUser = newUser;
-    // const user = newUser;
-    // res.redirect('user-profile', { user })
-    res.redirect('/auth/login')
+    req.session.currentUser = newUser;
+    const user = newUser;
+    res.redirect('user-profile', { user })
+    //res.redirect('/auth/login')
   })
 
   
