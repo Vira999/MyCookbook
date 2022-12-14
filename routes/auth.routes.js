@@ -15,7 +15,7 @@ const User = require("../models/User.model");
 const isLoggedOut = require("../middleware/isLoggedOut");
 const isLoggedIn = require("../middleware/isLoggedIn");
 
-const fileUploader = require("../config/cloudinary.config");
+//const fileUploader = require("../config/cloudinary.config");
 
 // GET /auth/signup
 router.get("/signup", isLoggedOut, (req, res) => {
@@ -23,14 +23,13 @@ router.get("/signup", isLoggedOut, (req, res) => {
 });
 
 // POST /auth/signup
-router.post("/auth/signup", fileUploader.single("imageUrl"), async (req, res, next) => {
+router.post("/auth/signup", async (req, res, next) => {
   const { firstName, lastName, username, email, password } = req.body;
-  const { path } = req.file;
 
   const passwordHash = await bcrypt.hash(password,saltRounds);
 
   User
-  .create({ firstName, lastName, username, email, passwordHash, profileImage: path })
+  .create({ firstName, lastName, username, email, passwordHash })
   .then((newUser) => {
     // req.session.currentUser = newUser;
     // const user = newUser;
