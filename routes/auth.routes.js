@@ -23,6 +23,7 @@ router.get("/signup", isLoggedOut, (req, res) => {
 // POST /auth/signup
 router.post("/signup", (req, res) => {
   const { firstName, lastName, username, email, password } = req.body;
+  const { path } = req.file;
 
   // Check that username, email, and password are provided
   // if (firstName === "" || lastName === "" || username === "" || email === "" || password === "") {
@@ -48,10 +49,10 @@ router.post("/signup", (req, res) => {
     .then((salt) => bcrypt.hash(password, salt))
     .then((hashedPassword) => {
       // Create a user and save it in the database
-      return User.create({ firstName, lastName, username, email, password: hashedPassword });
+      return User.create({ firstName, lastName, username, email, password: hashedPassword, profileImage: path });
     })
     .then(() => {
-      res.redirect("/login");
+      res.redirect("/auth/login");
     })
     .catch((error) => {
       if (error instanceof mongoose.Error.ValidationError) {
