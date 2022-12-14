@@ -56,20 +56,7 @@ router.post("/signup", fileUploader.single("imageUrl"), (req, res) => {
     .then(() => {
       res.redirect("/auth/login");
     })
-    .catch((error) => {
-      if (error instanceof mongoose.Error.ValidationError) {
-        res.status(500).render("auth/signup", { errorMessage: error.message })
-        console.log(error);
-      } else if (error.code === 11000) {
-        res.status(500).render("auth/signup", {
-          errorMessage:
-            "Username and email need to be unique. Provide a valid username or email.",
-        })
-        console.log(error);
-      } else {
-        next(error);
-      }
-    });
+    .catch((error) => console.log(error));
 });
 
 // GET /auth/login
