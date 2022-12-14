@@ -25,10 +25,10 @@ router.get("/chefs/:id", (req, res) => {
       const isSameChef = loggedInUserId === chefId
       const isNotSameChef = loggedInUserId !== chefId
       if(isSameChef){
-        res.render("../views/user-profile.hbs", { user: response.data, isSameChef })
+        res.render("user-profile", { user: response.data, isSameChef })
       }
       else {
-      res.render("../views/user-profile.hbs", { user: response.data, isNotSameChef })
+      res.render("user-profile", { user: response.data, isNotSameChef })
     }
     })
     .catch(error => console.log(error));
