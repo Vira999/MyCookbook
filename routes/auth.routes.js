@@ -32,9 +32,10 @@ router.post("/signup", fileUploader.single("imageUrl"), async (req, res, next) =
   User
   .create({ firstName, lastName, username, email, passwordHash, profileImage: path })
   .then((newUser) => {
-    req.session.currentUser = newUser;
-    const user = newUser;
-    res.redirect('user-profile', { user })
+    // req.session.currentUser = newUser;
+    // const user = newUser;
+    // res.redirect('user-profile', { user })
+    res.redirect('auth/login')
   })
 
   
