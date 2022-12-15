@@ -8,25 +8,26 @@ const recipe = require('../models/Recipe.model');
 const comment = require('../models/Comments.model'); 
 
  
+//READ: list all recipes
+router.get('/recipes', (req, res, next) => {
+    recipe.find()
+    .then(recipes => {
+        res.render('/views/recipes/recipe-list.hbs', { recipes });
+    })
+    .catch(err => {
+        console.log('error getting recipes from the DB', err);
+        next(err);
+    });
+});
+
+//CREATE: display form
+router.get('/recipes/create', isLoggedIn, (req, res, next) => {
+    res.render('/views/recipes/create-recipes.hbs');
+});
 // GET route to retrieve and display all the recipes
 router.get('/', isLoggedIn, (req, res) => {
   res.render('recipe/index');
 });
-
-
-router.get('/search', isLoggedIn,  (req, res) => {
-        const { recipeName } = req.query;
-
-        recipe.findOne({title: recipeName})
-            .then(foundByRecipe => {
-                res.render('../views/recipe-detail.hbs', {singleRecipe: foundByRecipe})
-            })
-            .catch(err => console.log(err))
-})
-
-router.get('/create', isLoggedIn, (req, res) => {
-    res.render('../views/recipe.hbs')
-})
 
 router.post('/create', isLoggedIn, (req, res) => {
     console.log(req.body)
@@ -46,16 +47,27 @@ router.post('/create', isLoggedIn, (req, res) => {
    image,
    ingredients,
    instruction})
-        .then(() => res.redirect('../views/recipe.hbs'))
+        .then(() => res.redirect('/views/recipes/create-recipes.hbs'))
         .catch(err => console.log(err))
-})
+});
+
+router.get('/search', isLoggedIn,  (req, res) => {
+    const { recipeName } = req.query;
+
+    recipe.findOne({title: recipeName})
+        .then(foundByRecipe => {
+            res.render('../recipes/recipe-details', {singleRecipe: foundByRecipe})
+        })
+        .catch(err => console.log(err))
+});
+
 //READ: Recipe details
 router.get('/recipes/:recipeId', (req, res, next) => {
   const id = req.params.recipeId;
 
-  Recipe.findById(id)
+  recipe.findById(id)
   .then(recipeDetails => {
-      res.render('recipes/recipe-details', recipeDetails);
+      res.render('/views/recipes/recipe-details.hbs', recipeDetails);
   })
   .catch(err => {
       console.log('error getting recipe details from DB', err);
@@ -72,7 +84,43 @@ router.get('/:recipeId', isLoggedIn, (req, res) => {
             res.render('../views/recipe.hbs', {singleRecipe: recipeFound})
         })
         .catch(err => console.log(err))
-})
+});
+
+//UPDATE: process form
+router.post('/recipes/:recipeId/edit', isLoggedIn, fileUploader.single('recipe-image'), (req, res, next) => {
+    const { recipeId } = req.params;
+    let { recipeName, cookTime, image, instruction, ingredients } = req.body;
+    otherIngredients = otherIngredients.split(', ');
+    instruction = instruction.split('\n');
+
+    let imageUrl;
+    if (req.file) {
+      imageUrl = req.file.path;
+    } else {
+      imageUrl = existingImage;
+    }
+  
+    recipe.findByIdAndUpdate(recipeId, { recipeName, cookTime, image, instruction, ingredients}, {new: true})
+    .then(() => {
+        res.redirect(`/recipes/${recipeId}`);
+    })
+    .catch(err => {
+        res.redirect('/views/recipes/edit-recipes.hbs');
+    });
+});
+
+//DELETE FROM RECIPES LIST PAGE
+router.get('/recipes/:recipeId/delete', isLoggedIn, (req, res, next) => {
+    recipe.findByIdAndDelete(req.params.recipeId)
+    .then(() => {
+        res.redirect('/recipes');
+    })
+    .catch(err => {
+        console.log('error deleting recipe', err);
+        next();
+    });
+});
+
 
 //DELETE FROM EDIT PAGE
 router.post('/recipes/:recipeId/delete', isLoggedIn, (req, res, next) => {
@@ -81,10 +129,11 @@ router.post('/recipes/:recipeId/delete', isLoggedIn, (req, res, next) => {
         res.redirect('/recipes');
     })
     .catch(err => {
-        console.log('error deleting', err);
+        console.log('error deleting recipe', err);
         next();
     });
 });
+
 
 router.get('/comments/:id', (req, res) => {
  
