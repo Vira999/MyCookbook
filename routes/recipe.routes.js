@@ -1,3 +1,4 @@
+const mongoose = require('mongoose');
 const express = require('express');
 const router = express.Router();
 
@@ -12,7 +13,7 @@ const comment = require('../models/Comments.model');
 router.get('/recipes', (req, res, next) => {
     recipe.find()
     .then(recipes => {
-        res.render('/views/recipes/recipe-list.hbs', { recipes });
+        res.render('/recipes/recipe-list', { recipes });
     })
     .catch(err => {
         console.log('error getting recipes from the DB', err);
