@@ -10,7 +10,7 @@ const isLoggedIn = require('../middleware/isLoggedIn');
 /* GET Signup page */
 router.get("/signup", (req, res) => {
   const loggedInNavigation = req.session.hasOwnProperty('currentUser');
-  res.render("auth/signup", {loggedInNavigation});
+  res.render("/auth/signup", {loggedInNavigation});
 });
 
 /* POST Signup page */
@@ -18,7 +18,7 @@ router.post("/signup", isLoggedOut, async (req, res, next) => {
   const { firstName, lastName, username, email, password } = req.body;
 
   if(!firstName || !lastName || !username || !email || !password) {
-    res.render('auth/signup', { errorMessage: 'All fields are mandatory to become a Chef in our community' });
+    res.render('/auth/signup', { errorMessage: 'All fields are mandatory to become a Chef in our community' });
     return;
   }
 
@@ -27,22 +27,22 @@ router.post("/signup", isLoggedOut, async (req, res, next) => {
   if (!regex.test(password)) {
     res
       .status(500)
-      .render('auth/signup', { errorMessage: 'Password needs to have at least 6 chars and must contain at least one number, one lowercase and one uppercase letter.' });
+      .render('/auth/signup', { errorMessage: 'Password needs to have at least 6 chars and must contain at least one number, one lowercase and one uppercase letter.' });
     return;
   }
 
   const passwordHash = await bcrypt.hash(password, saltRounds);
 
   User
-  .create({ firstName, lastName, username, email, password: passwordHash, profileImage: 'images/chef-hat-red.png', userBio: '', userRecipes: '' })
+  .create({ firstName, lastName, username, email, password: passwordHash, profileImage: '/public/images/chef-hat-red.png', userBio: '', userRecipes: '' })
   .then((newUser) => {
     res.redirect('/auth/login')
   })
   .catch(error => {
     if (error instanceof mongoose.Error.ValidationError) {
-      res.status(500).render('auth/signup', { errorMessage: error.message });
+      res.status(500).render('/auth/signup', { errorMessage: error.message });
     } else if (error.code === 11000) {
-    res.status(500).render('auth/signup', {
+    res.status(500).render('/auth/signup', {
        errorMessage: 'Username and email need to be unique. Either username or email is already used.'
        })
     }
