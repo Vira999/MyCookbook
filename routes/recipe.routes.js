@@ -21,8 +21,8 @@ router.get('/recipes', (req, res, next) => {
 });
 
 //CREATE: display form
-router.get('/recipes/create', isLoggedIn, (req, res, next) => {
-    res.render('/views/recipes/create-recipes.hbs');
+router.get('/recipes', isLoggedIn, (req, res, next) => {
+    res.render('/recipes/create-recipes');
 });
 // GET route to retrieve and display all the recipes
 router.get('/', isLoggedIn, (req, res) => {
@@ -47,7 +47,7 @@ router.post('/create', isLoggedIn, (req, res) => {
    image,
    ingredients,
    instruction})
-        .then(() => res.redirect('/views/recipes/create-recipes.hbs'))
+        .then(() => res.redirect('/recipes/create-recipes'))
         .catch(err => console.log(err))
 });
 
@@ -56,7 +56,7 @@ router.get('/search', isLoggedIn,  (req, res) => {
 
     recipe.findOne({title: recipeName})
         .then(foundByRecipe => {
-            res.render('../recipes/recipe-details', {singleRecipe: foundByRecipe})
+            res.render('/recipes/recipe-details', {singleRecipe: foundByRecipe})
         })
         .catch(err => console.log(err))
 });
@@ -67,7 +67,7 @@ router.get('/recipes/:recipeId', (req, res, next) => {
 
   recipe.findById(id)
   .then(recipeDetails => {
-      res.render('/views/recipes/recipe-details.hbs', recipeDetails);
+      res.render('/recipes/recipe-details', recipeDetails);
   })
   .catch(err => {
       console.log('error getting recipe details from DB', err);
@@ -81,7 +81,7 @@ router.get('/:recipeId', isLoggedIn, (req, res) => {
     recipe.findById(recipeId)
         .then(recipeFound => {
             console.log('recipeFound', recipeFound)
-            res.render('../views/recipe.hbs', {singleRecipe: recipeFound})
+            res.render('/recipes', {singleRecipe: recipeFound})
         })
         .catch(err => console.log(err))
 });
@@ -105,7 +105,7 @@ router.post('/recipes/:recipeId/edit', isLoggedIn, fileUploader.single('recipe-i
         res.redirect(`/recipes/${recipeId}`);
     })
     .catch(err => {
-        res.redirect('/views/recipes/edit-recipes.hbs');
+        res.redirect('/recipes/edit-recipes');
     });
 });
 
