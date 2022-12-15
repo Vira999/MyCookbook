@@ -36,7 +36,7 @@ router.post("/signup", isLoggedOut, async (req, res, next) => {
   User
   .create({ firstName, lastName, username, email, password: passwordHash, profileImage: 'images/chef-hat-red.png', userBio: '', userRecipes: '' })
   .then((newUser) => {
-    res.redirect('auth/login')
+    res.redirect('/auth/login')
   })
   .catch(error => {
     if (error instanceof mongoose.Error.ValidationError) {
