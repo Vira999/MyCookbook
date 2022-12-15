@@ -12,7 +12,7 @@ const comment = require('../models/Comments.model');
 router.get('/recipes', (req, res, next) => {
     recipe.find()
     .then(recipes => {
-        res.render('/views/recipes/recipe-list.hbs', { recipes });
+        res.render('recipes/recipe-list', { recipes });
     })
     .catch(err => {
         console.log('error getting recipes from the DB', err);
@@ -22,7 +22,7 @@ router.get('/recipes', (req, res, next) => {
 
 //CREATE: display form
 router.get('/recipes', isLoggedIn, (req, res, next) => {
-    res.render('/recipes/create-recipes');
+    res.render('recipes/create-recipes');
 });
 // GET route to retrieve and display all the recipes
 router.get('/', isLoggedIn, (req, res) => {
@@ -47,7 +47,7 @@ router.post('/create', isLoggedIn, (req, res) => {
    image,
    ingredients,
    instruction})
-        .then(() => res.redirect('/recipes/create-recipes'))
+        .then(() => res.redirect('recipes/create-recipes'))
         .catch(err => console.log(err))
 });
 
@@ -56,7 +56,7 @@ router.get('/search', isLoggedIn,  (req, res) => {
 
     recipe.findOne({title: recipeName})
         .then(foundByRecipe => {
-            res.render('/recipes/recipe-details', {singleRecipe: foundByRecipe})
+            res.render('recipes/recipe-details', {singleRecipe: foundByRecipe})
         })
         .catch(err => console.log(err))
 });
@@ -67,7 +67,7 @@ router.get('/recipes/:recipeId', (req, res, next) => {
 
   recipe.findById(id)
   .then(recipeDetails => {
-      res.render('/recipes/recipe-details', recipeDetails);
+      res.render('recipes/recipe-details', recipeDetails);
   })
   .catch(err => {
       console.log('error getting recipe details from DB', err);
@@ -105,7 +105,7 @@ router.post('/recipes/:recipeId/edit', isLoggedIn, fileUploader.single('recipe-i
         res.redirect(`/recipes/${recipeId}`);
     })
     .catch(err => {
-        res.redirect('/recipes/edit-recipes');
+        res.redirect('recipes/edit-recipes');
     });
 });
 
@@ -140,7 +140,7 @@ router.get('/comments/:id', (req, res) => {
      
       Comment.find({ recipeId: req.params.id }).then(comments => {
        console.log(comments);
-        res.render(`/views/comments-show.hbs`, { comments: comments })
+        res.render(`views/comments-show.hbs`, { comments: comments })
 
     }).catch((err) => {
       // catch errors
