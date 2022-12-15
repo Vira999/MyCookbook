@@ -1,128 +1,124 @@
-const mongoose = require('mongoose');
-const express = require("express");
-const router = express.Router();
+const bcrypt = require('bcrypt');
+const saltRounds = 10;
+const router = require("express").Router();
 
-// ℹ️ Handles password encryption
-const bcrypt = require("bcrypt");
+const User = require('../models/User.model');
 
-// How many rounds should bcrypt run the salt (default - 10 rounds)
-const saltRounds = 13;
+const isLoggedOut = require('../middleware/isLoggedOut')
 
-// Require the User model in order to interact with the database
-const User = require("../models/User.model");
-
-// Require necessary (isLoggedOut and isLiggedIn) middleware in order to control access to specific routes
-const isLoggedOut = require("../middleware/isLoggedOut");
-const isLoggedIn = require("../middleware/isLoggedIn");
-
-//const fileUploader = require("../config/cloudinary.config");
-
-// GET /auth/signup
-router.get("/signup", isLoggedOut, (req, res) => {
-  res.render("auth/signup");
+/* GET Signup page */
+router.get("/signup", (req, res) => {
+  const loggedInNavigation = req.session.hasOwnProperty('currentUser');
+  res.render("auth/signup", {loggedInNavigation});
 });
 
-// POST /auth/signup
-router.post("/auth/signup", isLoggedOut, async (req, res, next) => {
+/* POST Signup page */
+router.post("/signup", isLoggedOut, async (req, res, next) => {
   const { firstName, lastName, username, email, password } = req.body;
 
-  const passwordHash = await bcrypt.hash(password,saltRounds);
-
-  User
-  .create({ firstName, lastName, username, email, passwordHash })
-  .then((newUser) => {
-    req.session.currentUser = newUser;
-    const user = newUser;
-    res.redirect('user-profile', { user })
-    //res.redirect('/auth/login')
-  })
-
-  
-  // Create a new user - start by hashing the password
-  // bcrypt
-  //   .genSalt(saltRounds)
-  //   .then((salt) => bcrypt.hash(password, salt))
-  //   .then((hashedPassword) => {
-  //     // Create a user and save it in the database
-  //     return User.create({ firstName, lastName, username, email, password: hashedPassword, profileImage: path });
-  //   })
-  //   .then(() => {
-  //     res.redirect("/auth/login");
-  //   })
-  //   .catch((error) => console.log(error));
-});
-
-// GET /auth/login
-router.get("/login", isLoggedOut, (req, res) => {
-  res.render("auth/login");
-});
-
-// POST /auth/login
-router.post("/login", isLoggedOut, (req, res, next) => {
-  const { email, password } = req.body;
-
-  // Check that username, email, and password are provided
-  if (email === "" || password === "") {
-    res.status(400).render("auth/login", {
-      errorMessage:
-        "All fields are mandatory. Please provide email and password.",
-    });
-
+  if(!firstName || !lastName || !username || !email || !password) {
+    res.render('auth/signup', { errorMessage: 'All fields are mandatory to become a Chef in our community' });
     return;
   }
 
-  // Here we use the same logic as above
-  // - either length based parameters or we check the strength of a password
-  if (password.length < 6) {
-    return res.status(400).render("auth/login", {
-      errorMessage: "Your password needs to be at least 6 characters long.",
-    });
+  const regex = /(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{6,}/;
+  
+  if (!regex.test(password)) {
+    res
+      .status(500)
+      .render('auth/signup', { errorMessage: 'Password needs to have at least 6 chars and must contain at least one number, one lowercase and one uppercase letter.' });
+    return;
   }
 
-  // Search the database for a user with the email submitted in the form
-  User.findOne({ email })
-    .then((user) => {
-      // If the user isn't found, send an error message that user provided wrong credentials
-      if (!user) {
-        res
-          .status(400)
-          .render("auth/login", { errorMessage: "Wrong credentials." });
-        return;
-      }
+  const passwordHash = await bcrypt.hash(password, saltRounds);
 
-      // If user is found based on the username, check if the in putted password matches the one saved in the database
-      bcrypt
-        .compare(password, user.password)
-        .then((isSamePassword) => {
-          if (!isSamePassword) {
-            res
-              .status(400)
-              .render("auth/login", { errorMessage: "Wrong credentials." });
-            return;
-          }
-
-          const userId = user.id
-
-          // Add the user object to the session object
-          req.session.currentUser = user.toObject();
-          // Remove the password field
-          delete req.session.currentUser.password;
-
-          res.redirect(`/chefs/${userId}`);
-        })
-        .catch((err) => next(err)); // In this case, we send error handling to the error handling middleware.
-    })
-    .catch((err) => next(err));
+  User
+  .create({ firstName, lastName, username, email, password: passwordHash, profileImage: 'images/chef-hat-red.png', userBio: '', userRecipes: '' })
+  .then((newUser) => {
+    res.redirect('auth/login')
+  })
+  .catch(error => {
+    if (error instanceof mongoose.Error.ValidationError) {
+      res.status(500).render('auth/signup', { errorMessage: error.message });
+    } else if (error.code === 11000) {
+    res.status(500).render('auth/signup', {
+       errorMessage: 'Username and email need to be unique. Either username or email is already used.'
+       })
+    }
+  else {
+    next(error);
+    }
+  })
 });
 
-// GET /auth/logout
-router.get("/logout", isLoggedIn, (req, res) => {
-  req.session.destroy((err) => {
-    if (err) {
-      res.status(500).render("auth/logout", { errorMessage: err.message });
+/* GET User Profile page */
+router.get("/profile", isLoggedIn, (req, res, next) => {
+
+  console.log(req.session);
+  const { currentUser } = req.session
+  
+  if(currentUser){
+    const currentUserId = req.session?.currentUser?._id;
+
+    User
+    .findById(currentUserId)
+    .populate("userRecipes")
+    .populate({
+      path: 'userRecipes',
+      populate: {
+        path: "recipe",
+        populate: {
+          path: "title image",
+          model: "Recipe",
+        }
+      }
+    })
+    .then((user) => {
+      res.render("user-profile", { user })
+    })
+  }
+  else {
+      res.redirect('/auth/login')
+  }
+  
+});
+
+/* GET Login page */
+router.get("/login", isLoggedOut, (req, res) => {
+  console.log(req.session)
+  res.render("auth/login");
+});
+
+/* POST Login page */
+router.post("/login", isLoggedOut, (req, res) => {
+  const { email, password } = req.body;
+
+  if (email === '' || password === '') {
+      res.render('auth/login', {
+        errorMessage: 'Please log-in with your email and password'
+      });
       return;
+  }
+  
+ User
+ .findOne({ email })
+ .then(user => {
+    if (!user) {
+      res.render('auth/login', { errorMessage: 'Incorrect credentials' });
+    } else if (bcrypt.compareSync(password, user.password)) {
+      res.render('user-profile', { user })
+    } else {
+      res.render('auth/login', { errorMessage: 'Incorrect credentials' });
     }
-    res.redirect("/");
+  })
+  .catch(error => next(error));
+});
+
+/* POST Logout page */
+router.post('/logout', isLoggedIn, (req, res) => {
+  req.session.destroy(err => {
+    if (err) console.log(err);
+    res.redirect('/');
   });
 });
 
