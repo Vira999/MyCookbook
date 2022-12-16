@@ -3,23 +3,23 @@
   <form action="/edit-profile" method="POST">
 
     <label> First Name
-      <input type="text" name="firstName" placeholder="{{this.firstName}}" />
+      <input type="text" name="firstName" placeholder="{{ this.firstName }}" />
     </label>
 
     <label> Last Name
-      <input type="text" name="lastName" placeholder="{{this.lastName}}" />
+      <input type="text" name="lastName" placeholder="{{ this.lastName }}" />
     </label>
 
     <label> Username
-      <input type="text" name="username" placeholder="{{this.username}}" />
+      <input type="text" name="username" placeholder="{{ this.username }}" />
     </label>
 
     <label for="">Update image</label>
-     <input type="file" name="profileImage" id="" value="{{this.profileImage}}">
+     <input type="file" name="profileImage" id="" value="{{ this.profileImage }}">
 
     <label> Bio
     {{#if this.userBio}}
-      <input type="text" name="userBio" placeholder="{{this.userBio}}" />
+      <input type="text" name="userBio" placeholder="{{ this.userBio }}" />
     {{else}}
       <input type="text" name="userBio" placeholder="Write something about yourself, and let the community know who you are!" />
     {{/if}}

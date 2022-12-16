@@ -1,12 +1,123 @@
-body {
-  padding: 50px;
-  font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
+@font-face {
+  font-family: "Unbounded-Bold";
+  src: url("../fonts/Unbounded-Bold.ttf");
+}
+@font-face {
+  font-family: "Poppins-Regular";
+  src: url("../fonts/Poppins-Regular.ttf");
+}
+@font-face {
+  font-family: "Unbounded-Light";
+  src: url("../fonts/Unbounded-Light.ttf");
 }
 
-a {
-  color: #00b7ff;
+body {
+  font-family: Poppins-Regular;
+  font-size: 14px;
+  margin:0;
+  background-color: #FFEB80;
+}
+
+nav {
+  width: 100vw;
+  left: 0;
+  top: 0;
+  background-color: #0028FF;
+  height: 70px;
+}
+
+nav ul {
+  list-style-type: none;
+  display: flex;
+  flex-wrap: nowrap;
+  flex-direction: row;
+  justify-content:space-around;
+  align-items: center;
+  align-self:auto;
+  padding-top: 22px;
+  font-family: Unbounded-Bold;
+  font-size: 20px;
+}
+
+nav ul a {
+  color: white;
+  text-decoration: none;
 }
 
 h1 {
-  color: 15px;
+  font-family: Unbounded-Bold;
+  font-size: 48px;
+}
+
+.title {
+  text-align: center;
+  color: black;
+}
+
+.subtitle {
+  text-align: center;
+  color: black;
+}
+
+h2 {
+  font-family: Unbounded-Light;
+  font-size: 36px;
+}
+
+label, input {
+  display: block;
+}
+
+label {
+  margin-bottom: 20px;
+}
+
+#signup-page {
+  display: flex;
+  flex-wrap: nowrap;
+  flex-direction: row;
+  justify-content:space-between;
+  align-items: center;
+  margin-left: 220px;
+  margin-right: 220px;
+}
+
+#signup-img {
+  height: 500px;
+  width: auto;
+  border: 5px solid;
+  border-radius: 10px;
+  border-color: #0028FF;
+  border-width: 5px;
+}
+
+#signup-form input {
+  width: 250px;
+}
+
+.btn {
+  background-color: #0028FF;
+  font-family: Unbounded-Bold;
+  border: none;
+  border-radius: 10px;
+  color: white;
+  padding: 15px 32px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
+  width: 250px;
+}
+
+input:focus {
+  border: 3px solid #0028FF;
+}
+
+#welcome {
+  text-align: center;
+  color: #0028FF;
+}
+
+.error {
+  color: red;
 }

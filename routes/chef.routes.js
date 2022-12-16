@@ -1,58 +1,61 @@
 const mongoose = require('mongoose');
 const express = require('express');
 const User = require('../models/User.model');
+const Recipe = require('../models/Recipe.model');
 const isLoggedIn = require('../middleware/isLoggedIn');
 const isLoggedOut = require('../middleware/isLoggedOut');
 const isSameChef = require('../middleware/isSameChef');
 const fileUploader = require("../config/cloudinary.config");
 const router = express.Router();
 
-router.get("/chefs/", (req, res) => {
+router.get("/", (req, res) => {
     User.find()
-    .then (allChefs => res.render('../views/chefs.hbs', { chefs: allChefs}))
+    .then (allChefs => res.render('chefs/chefs.hbs', { chefs: allChefs }))
     .catch(err => res.send(err))
 });
 
-router.get("/chefs/:id", (req, res) => {
-    const chefId = req.params.id;
-    const loggedInUserId = req.session?.currentUser?._id;
+router.get("chefs/:id", async (req, res, next) => {
+    //const userId = req.session.currentUser._id
+    const userId = req.params.id
+    console.log(`userID ==> ${userId}`)
   
     User
-    .findById(chefId)
+    .findById(userId)
+    .populate("userRecipes")
     .populate({
       path: 'userRecipes',
-      populate: {path: 'recipes'}})
-    .then((response) => {
-      const isSameChef = loggedInUserId === chefId
-      const isNotSameChef = loggedInUserId !== chefId
-      if(isSameChef){
-        res.render("user-profile", { user: response.data, isSameChef })
+      populate: {
+        path: "recipe",
+        populate: {
+          path: "title image",
+          model: "Recipe",
+        }
       }
-      else {
-      res.render("user-profile", { user: response.data, isNotSameChef })
-    }
+    })
+    .then((user) => {
+      res.render("chefs/profile.hbs", {user})
     })
     .catch(error => console.log(error));
   });
 
-  router.get("/chef/:id/edit", (req, res) => {
+  router.get("/chefs/:id/edit", (req, res) => {
     const chefId = req.params.id;
     const loggedInUserId = req.session?.currentUser?._id;
     const isSameChef = loggedInUserId === chefId;
 
     if(!isSameChef){
-      res.render(`/chef/${chefId}`);
+      res.render(`/chefs/${chefId}`);
     }
     else {
       User
       .findById(chefId)
       .then((chef) => {
-        res.render("../views/edit-profile.hbs", { chef })
+        res.render("/edit-profile", { chef })
       })
     }
-  })
+  });
 
-  router.post("/chef/:id/edit", isSameChef, fileUploader.single("imageUrl"), (req, res) => {
+  router.post("/chef/:id/edit", fileUploader.single("imageUrl"), (req, res) => {
     const chefId = req.params.id;
     const loggedInUserId = req.session?.currentUser?._id;
     const isSameChef = loggedInUserId === chefId;
@@ -62,15 +65,14 @@ router.get("/chefs/:id", (req, res) => {
     if(isSameChef){
       User.findByIdAndUpdate(chefId, { firstName, lastName, username, userBio, profileImage: path }, {new:true})
         .then(() => {
-          res.redirect('../views/chefs.hbs')
+          res.redirect('/chefs')
         })
         .catch(err => console.error(err))
     }
     else {
       res.render(`/chef/${chefId}`)
     }
-   }
- )
+   });
 
 
 

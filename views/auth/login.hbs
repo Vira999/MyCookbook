@@ -1,6 +1,6 @@
-<div id="login-form">
-  <h2>Log In</h2>
-  <form action="/auth/login" method="POST">
+<h2 class="subtitle">Log In</h2>
+<div id="signup-page">
+  <form id="signup-form" action="/auth/login" method="POST">
 
     <label> Email
       <input type="email" name="email" placeholder="Your email" />
@@ -10,11 +10,12 @@
       <input type="password" name="password" placeholder="Your password" />
     </label>
 
-    <button type="submit">Log In</button>
+    <button class="btn" type="submit">Log In</button>
 
 
     {{#if errorMessage}}
       <p class="error">{{errorMessage}}</p>
     {{/if}}
   </form>
+  <img src="/images/pruthvi-sagar-a-r-xxgNqAtIJ0s-unsplash.jpg" alt="flame" id="signup-img">
 </div>
