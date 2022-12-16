@@ -91,15 +91,6 @@ router.get('/:recipeId', isLoggedIn, (req, res) => {
 router.post('/recipes/:recipeId/edit', isLoggedIn, fileUploader.single('recipe-image'), (req, res, next) => {
     const { recipeId } = req.params;
     let { recipeName, cookTime, image, instruction, ingredients } = req.body;
-    otherIngredients = otherIngredients.split(', ');
-    instruction = instruction.split('\n');
-
-    let imageUrl;
-    if (req.file) {
-      imageUrl = req.file.path;
-    } else {
-      imageUrl = existingImage;
-    }
   
     recipe.findByIdAndUpdate(recipeId, { recipeName, cookTime, image, instruction, ingredients}, {new: true})
     .then(() => {
