@@ -9,10 +9,9 @@ const isLoggedOut = require('../middleware/isLoggedOut');
 const isLoggedIn = require('../middleware/isLoggedIn');
 
 /* GET Signup page */
-router.get("/signup", (req, res) => {
-  const loggedInNavigation = req.session.hasOwnProperty('currentUser');
-  res.render("auth/signup", {loggedInNavigation});
-});
+router.get('/signup', (req, res, next) => {
+  res.render('auth/signup')
+})
 
 /* POST Signup page */
 router.post("/signup", isLoggedOut, async (req, res, next) => {
