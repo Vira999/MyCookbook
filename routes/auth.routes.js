@@ -1,3 +1,4 @@
+const mongoose = require('mongoose');
 const bcrypt = require('bcrypt');
 const saltRounds = 10;
 const router = require("express").Router();
@@ -34,9 +35,9 @@ router.post("/signup", isLoggedOut, async (req, res, next) => {
   const passwordHash = await bcrypt.hash(password, saltRounds);
 
   User
-  .create({ firstName, lastName, username, email, password: passwordHash, profileImage: 'images/chef-hat-red.png', userBio: '', userRecipes: '' })
-  .then((newUser) => {
-    res.redirect('/auth/login')
+  .create({ firstName, lastName, username, email, password: passwordHash, profileImage: 'images/chef-hat-red.png', userBio: '', userRecipes: [] })
+  .then((user) => {
+    res.render('chefs/profile', { user })
   })
   .catch(error => {
     if (error instanceof mongoose.Error.ValidationError) {
@@ -53,12 +54,7 @@ router.post("/signup", isLoggedOut, async (req, res, next) => {
 });
 
 /* GET User Profile page */
-router.get("/profile", isLoggedIn, (req, res, next) => {
-
-  console.log(req.session);
-  const { currentUser } = req.session
-  
-  if(currentUser){
+router.get("/profile", isLoggedIn, (req, res) => {
     const currentUserId = req.session?.currentUser?._id;
 
     User
@@ -77,21 +73,16 @@ router.get("/profile", isLoggedIn, (req, res, next) => {
     .then((user) => {
       res.render("user-profile", { user })
     })
-  }
-  else {
-      res.redirect('/auth/login')
-  }
-  
 });
 
 /* GET Login page */
 router.get("/login", isLoggedOut, (req, res) => {
-  console.log(req.session)
-  res.render("auth/login");
+  const loggedInNavigation = req.session.hasOwnProperty('currentUser')
+  res.render("auth/login", {loggedInNavigation});
 });
 
 /* POST Login page */
-router.post("/login", isLoggedOut, (req, res) => {
+router.post("/login", isLoggedOut, (req, res, next) => {
   const { email, password } = req.body;
 
   if (email === '' || password === '') {
@@ -107,7 +98,9 @@ router.post("/login", isLoggedOut, (req, res) => {
     if (!user) {
       res.render('auth/login', { errorMessage: 'Incorrect credentials' });
     } else if (bcrypt.compareSync(password, user.password)) {
-      res.render('user-profile', { user })
+      res.render('chefs/profile', { user });
+      //const loggedInUserId = req.session.currentUser._id
+      //res.redirect(`/chefs/${user.id}`)
     } else {
       res.render('auth/login', { errorMessage: 'Incorrect credentials' });
     }

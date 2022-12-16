@@ -1,32 +1,34 @@
-<div id="form">
-  <h2>Sign Up to My Cookbook!</h2>
-  <form action="/auth/signup" method="POST">
+<h2 class="subtitle">Sign Up to My Cookbook!</h2>
+<div id="signup-page">
+ <div>
+   <form id="signup-form" action="/auth/signup" method="POST">
 
-    <label> First Name
-      <input type="text" name="firstName" placeholder="Bruce" />
-    </label>
+     <label> First Name
+       <input type="text" name="firstName" placeholder="Bruce" />
+     </label>
+     <br>
+     <label> Last Name
+       <input type="text" name="lastName" placeholder="Wayne" />
+     </label>
+     <br>
+     <label> Username
+       <input type="text" name="username" placeholder="TheBatman" />
+     </label>
+     <br>
+     <label> Email
+       <input type="email" name="email" placeholder="batman@wayne-corp.com" />
+     </label>
+     <br>
+     <label> Password
+       <input type="password" name="password" placeholder="Your password" />
+     </label>
+     <br>
+     <button class="btn" type="submit">Sign Up</button>
 
-    <label> Last Name
-      <input type="text" name="lastName" placeholder="Wayne" />
-    </label>
-
-    <label> Username
-      <input type="text" name="username" placeholder="TheBatman" />
-    </label>
-
-    <label> Email
-      <input type="email" name="email" placeholder="batman@wayne-corp.com" />
-    </label>
-
-    <label> Password
-      <input type="password" name="password" placeholder="Your password" />
-    </label>
-
-    <button type="submit">Sign Up</button>
-
-
-    {{#if errorMessage}}
-      <p class="error">{{errorMessage}}</p>
-    {{/if}}
-  </form>
+     {{#if errorMessage}}
+       <p class="error">{{errorMessage}}</p>
+     {{/if}}
+   </form>
+  </div>
+  <img src="/images/charlesdeluvio-PqsImnjuElM-unsplash.jpg" alt="curry" id="signup-img">
 </div>

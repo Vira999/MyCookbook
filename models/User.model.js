@@ -1,3 +1,4 @@
+const mongoose = require('mongoose');
 const { Schema, model } = require("mongoose");
 
 // TODO: Please make sure you edit the User model to whatever makes sense in this case
@@ -30,7 +31,7 @@ const userSchema = new Schema(
     },
     profileImage: {
       type: String,
-      default: 'images/chef-hat-red.png'
+      default: '../public/images/chef-hat-red.png'
     },
     userBio: {
       type: String,
