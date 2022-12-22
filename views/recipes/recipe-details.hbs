@@ -30,8 +30,8 @@
   <div style="display: flex;">
      <p> <b>{{ this.user }} said: </b> {{ this.comment }}</p>
     {{#if this.isChangeable}}
-      <a href="/comments/edit/{{this._id}}">Edit</a>
-      <form action="/comments/delete/{{this._id}}" method="POST">
+      <a href="/comment/edit/{{this._id}}">Edit</a>
+      <form action="/comment/delete/{{this._id}}" method="POST">
         <button type="submit"> Delete </button>
       </form>
   </div>
@@ -45,7 +45,7 @@
 {{!-- this means that only if the user IS NOT the owner, this form will be shown --}}
 {{#if isNotOwner}}
   <h2>Add a comment:</h2>
-  <form action="/comments/create/{{recipe._id}}" method="POST">
+  <form action="/comment/create/{{recipe._id}}" method="POST">
     <textarea name="comment" id="" cols="10" rows="5"></textarea>
     <button type="submit">Add</button>
   </form>
