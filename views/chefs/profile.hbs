@@ -16,7 +16,7 @@
     {{#each user.userRecipes}}
     <div style="background-image: {{ this.image }}">
         <h4>{{ this.title }}</h4>
-        <a href="/recipes/:recipeId">Read Recipe</a>
+        <a href=`/recipes/{{ this.id }}`>Read Recipe</a>
     </div>
     {{/each}}
 </div>
