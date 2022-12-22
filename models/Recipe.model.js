@@ -12,9 +12,8 @@ const recipeSchema = new Schema({
     ref:'User'
 },
 
-  createdDate: { type: Date, default: Date.now },
   
-  image: {
+  Recipeimage: {
     type: String,
     required: false,
   },
@@ -24,7 +23,7 @@ const recipeSchema = new Schema({
   comments: [
     {
         type :mongoose.Schema.Types.ObjectId ,
-        ref:"Comments"                         //"Comments is the Model name"
+        ref:"Comment"                         //"Comments is the Model name"
     }
 
     ],
