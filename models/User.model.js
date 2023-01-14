@@ -31,7 +31,7 @@ const userSchema = new Schema(
     },
     profileImage: {
       type: String,
-      default: '../public/images/chef-hat-red.png'
+      default: 'images/chef-hat-red.png'
     },
     userBio: {
       type: String,

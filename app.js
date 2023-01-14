@@ -5,6 +5,7 @@ require("dotenv/config");
 
 // ℹ️ Connects to the database
 require("./db/index");
+const { PORT, MONGODB_URI } = process.env;
 
 // Handles http requests (express is node js framework)
 // https://www.npmjs.com/package/express
