@@ -8,43 +8,25 @@ const fileUploader = require("../config/cloudinary.config");
 const Recipe = require('../models/Recipe.model');
 const Comment = require('../models/Comment.model'); 
 
- 
-//READ: list all recipes
-router.get('/recipes', (req, res, next) => {
-    Recipe.find()
-    .then(recipes => {
-        res.render('recipes/recipe-list', { recipes });
-    })
-    .catch(err => {
-        console.log('error getting recipes from the DB', err);
-        next(err);
-    });
-});
 
 //CREATE: display form
-router.get('/recipes/create', isLoggedIn, (req, res, next) => {
+router.get('/recipes/create', (req, res, next) => {
     res.render('recipes/create-recipes');
 });
 
-router.post('/create', isLoggedIn, (req, res) => {
+router.post('/recipes/create', (req, res) => {
     console.log(req.body)
-    const { title,
-         time,
-        date,
-        creator,
-        recipeImage,
-        ingredients,
-        instruction} = req.body;
+    const { title, creator, ingredients, instructions } = req.body;
+        // //  time,
+        // // date,
+        // creator,
+        // //recipeImage,
+        // ingredients,
+        // instructions } = req.body;
     
-   Recipe.create({ 
-   title,
-   time,
-   date,
-   creator,
-   recipeImage,
-   ingredients,
-   instruction})
-        .then(() => res.redirect('recipes/create-recipes'))
+   Recipe
+        .create({ title, creator, ingredients, instructions })
+        .then((recipe) => res.redirect(`${recipe._id}`))
         .catch(err => console.log(err))
 });
 
@@ -72,16 +54,16 @@ router.get('/recipes/:recipeId', (req, res, next) => {
   });
 });
 
-router.get('/:recipeId', isLoggedIn, (req, res) => {
-    const { recipeId } = req.params;
+// router.get('/:recipeId', isLoggedIn, (req, res) => {
+//     const { recipeId } = req.params;
    
-    Recipe.findById(recipeId)
-        .then(recipeFound => {
-            console.log('recipeFound', recipeFound)
-            res.render('/recipes', {singleRecipe: recipeFound})
-        })
-        .catch(err => console.log(err))
-});
+//     Recipe.findById(recipeId)
+//         .then(recipeFound => {
+//             console.log('recipeFound', recipeFound)
+//             res.render('/recipes', {singleRecipe: recipeFound})
+//         })
+//         .catch(err => console.log(err))
+// });
 
 //UPDATE: process form
 router.get('/recipes/:recipeId/edit', isLoggedIn, (req, res) => {
@@ -101,6 +83,7 @@ router.post('/recipes/:recipeId/edit', isLoggedIn, fileUploader.single('recipe-i
         console.log('error deleting recipe', err);
     });
 });
+
 
 //DELETE FROM PAGE
 router.post('/recipes/:recipeId/delete', isLoggedIn, (req, res, next) => {
@@ -127,7 +110,19 @@ router.get('/comment/:id', (req, res) => {
       console.log(err.message)
     });
   });
- 
+
+
+//READ: list all recipes
+router.get('/recipes', (req, res, next) => {
+    Recipe.find()
+    .then(recipes => {
+        res.render('recipes/recipe-list', { recipes });
+    })
+    .catch(err => {
+        console.log('error getting recipes from the DB', err);
+        next(err);
+    });
+});
     
 
  

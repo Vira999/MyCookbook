@@ -8,8 +8,9 @@ const recipeSchema = new Schema({
   
   ingredients: { type: Array },
   creator: {
-    type: mongoose.Schema.Types.ObjectId,
-    ref:'User'
+    type: String,
+    // type: mongoose.Schema.Types.ObjectId,
+    // ref:'User'
 },
 
   
@@ -20,13 +21,13 @@ const recipeSchema = new Schema({
 
   instructions: {type: String, required: true },
 
-  comments: [
-    {
-        type :mongoose.Schema.Types.ObjectId ,
-        ref:"Comment"                         //"Comments is the Model name"
-    }
+  // comments: [
+  //   // {
+  //   //     type :mongoose.Schema.Types.ObjectId ,
+  //   //     ref:"Comment"                         //"Comments is the Model name"
+  //   // }
 
-    ],
+  //   ],
 
   
 });

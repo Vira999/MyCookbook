@@ -8,13 +8,7 @@ const isSameChef = require('../middleware/isSameChef');
 const fileUploader = require("../config/cloudinary.config");
 const router = express.Router();
 
-router.get("/", (req, res) => {
-    User.find()
-    .then (allChefs => res.render('chefs/chefs.hbs', { chefs: allChefs }))
-    .catch(err => res.send(err))
-});
-
-router.get("chefs/:id", async (req, res, next) => {
+router.get("/:id", async (req, res, next) => {
     //const userId = req.session.currentUser._id
     const userId = req.params.id
     console.log(`userID ==> ${userId}`)
@@ -22,40 +16,59 @@ router.get("chefs/:id", async (req, res, next) => {
     User
     .findById(userId)
     .populate("userRecipes")
-    .populate({
-      path: 'userRecipes',
-      populate: {
-        path: "recipe",
-        populate: {
-          path: "title image",
-          model: "Recipe",
-        }
-      }
-    })
+    // .populate({
+    //   path: 'userRecipes',
+    //   populate: {
+    //     path: "recipe",
+    //     populate: {
+    //       path: "title image",
+    //       model: "Recipe",
+    //     }
+    //   }
+    // })
     .then((user) => {
-      res.render("chefs/profile.hbs", {user})
+      res.render("/profile", {user})
     })
     .catch(error => console.log(error));
   });
 
-  router.get("/chefs/:id/edit", (req, res) => {
-    const chefId = req.params.id;
-    const loggedInUserId = req.session?.currentUser?._id;
-    const isSameChef = loggedInUserId === chefId;
+  // router.get("/chefs/:id/edit", (req, res) => {
+  //   const chefId = req.session.currentUser._id;
+  //   //const loggedInUserId = req.session?.currentUser?._id;
+  //   //const isSameChef = loggedInUserId === chefId;
 
-    if(!isSameChef){
-      res.render(`/chefs/${chefId}`);
-    }
-    else {
-      User
-      .findById(chefId)
-      .then((chef) => {
-        res.render("/edit-profile", { chef })
-      })
-    }
-  });
+  //   User
+  //   .findById(chefId)
+  //   .then((chef) => {
+  //     res.render("/edit-profile", { chef })
+  //   })
 
-  router.post("/chef/:id/edit", fileUploader.single("imageUrl"), (req, res) => {
+    // if(!isSameChef){
+    //   res.render(`/chefs/${chefId}`);
+    // }
+    // else {
+    //   User
+    //   .findById(chefId)
+    //   .then((chef) => {
+    //     res.render("/edit-profile", { chef })
+    //   })
+    // }
+  //});
+
+  /* GET EDIT profile */
+router.get("/:id/edit", (req, res) => {
+  const chefId = req.session.currentUser._id;
+  //const loggedInUserId = req.session?.currentUser?._id;
+  //const isSameChef = loggedInUserId === chefId;
+
+  User
+  .findById(chefId)
+  .then((chef) => {
+    res.render("edit-profile", { chef })
+  })
+})
+
+  router.post("/:id/edit", fileUploader.single("imageUrl"), (req, res) => {
     const chefId = req.params.id;
     const loggedInUserId = req.session?.currentUser?._id;
     const isSameChef = loggedInUserId === chefId;
@@ -70,9 +83,17 @@ router.get("chefs/:id", async (req, res, next) => {
         .catch(err => console.error(err))
     }
     else {
-      res.render(`/chef/${chefId}`)
+      res.redirect(`/chefs/${chefId}`)
     }
    });
+
+
+
+   router.get("/", (req, res) => {
+    User.find()
+    .then (allChefs => res.render('chefs/chefs', { chefs: allChefs }))
+    .catch(err => res.send(err))
+});
 
 
 

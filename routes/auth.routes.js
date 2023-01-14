@@ -34,7 +34,7 @@ router.post("/signup", isLoggedOut, async (req, res, next) => {
   const passwordHash = await bcrypt.hash(password, saltRounds);
 
   User
-  .create({ firstName, lastName, username, email, password: passwordHash, profileImage: 'images/chef-hat-red.png', userBio: '', userRecipes: [] })
+  .create({ firstName, lastName, username, email, password: passwordHash })
   .then((user) => {
     res.render('chefs/profile', { user })
   })
@@ -61,13 +61,13 @@ router.get("/profile", isLoggedIn, (req, res) => {
     .populate("userRecipes")
     .populate({
       path: 'userRecipes',
-      populate: {
-        path: "recipe",
-        populate: {
-          path: "title image",
-          model: "Recipe",
-        }
-      }
+      // populate: {
+      //   path: "recipe",
+      //   populate: {
+      //     path: "title image",
+      //     model: "Recipe",
+      //   }
+      // }
     })
     .then((user) => {
       res.render("user-profile", { user })
@@ -106,6 +106,9 @@ router.post("/login", isLoggedOut, (req, res, next) => {
   })
   .catch(error => next(error));
 });
+
+
+
 
 /* POST Logout page */
 router.post('/logout', isLoggedIn, (req, res) => {

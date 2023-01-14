@@ -2,9 +2,9 @@
     <h2 id="welcome"> Welcome, {{ user.username }}!</h2>
     <p>Something about you: <br> {{ user.userBio }}</p>
     <br>
-    <div>
-        <a href=`/chefs/${{ user.id }}/edit`><button class="edit-btn" type="button">Edit Profile</button></a>
-    </div>
+    {{!-- <div>
+        <a href=`/${{ user.id }}/edit`><button class="edit-btn" type="button">Edit Profile</button></a>
+    </div> --}}
     <br>
     <div>
         <a href="/recipes/create"><button class="edit-btn" type="button">Add Recipe</button></a>
