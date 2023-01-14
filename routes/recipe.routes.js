@@ -40,19 +40,7 @@ router.get('/recipes/search', isLoggedIn,  (req, res) => {
         .catch(err => console.log(err))
 });
 
-//READ: Recipe details
-router.get('/recipes/:recipeId', (req, res, next) => {
-  const id = req.params.recipeId;
 
-  Recipe.findById(id)
-  .then(recipeDetails => {
-      res.render('recipes/recipe-details', recipeDetails);
-  })
-  .catch(err => {
-      console.log('error getting recipe details from DB', err);
-      next(err);
-  });
-});
 
 // router.get('/:recipeId', isLoggedIn, (req, res) => {
 //     const { recipeId } = req.params;
@@ -66,9 +54,14 @@ router.get('/recipes/:recipeId', (req, res, next) => {
 // });
 
 //UPDATE: process form
-router.get('/recipes/:recipeId/edit', isLoggedIn, (req, res) => {
-    const loggedInNavigation = req.session.hasOwnProperty('currentUser'); 
-    res.render('recipes/edit-recipes', {loggedInNavigation})
+router.get('/recipes/:recipeId/edit', (req, res) => {
+    const { recipeId } = req.params.recipeId;
+    // const loggedInNavigation = req.session.hasOwnProperty('currentUser'); 
+
+    Recipe.findById(recipeId)
+    .then(recipe => {
+        res.render('recipes/edit-recipes', {recipe})
+    })
 })
 
 router.post('/recipes/:recipeId/edit', isLoggedIn, fileUploader.single('recipe-image'), (req, res, next) => {
@@ -96,6 +89,20 @@ router.post('/recipes/:recipeId/delete', isLoggedIn, (req, res, next) => {
         next();
     });
 });
+
+//READ: Recipe details
+router.get('/recipes/:recipeId', (req, res, next) => {
+    const id = req.params.recipeId;
+  
+    Recipe.findById(id)
+    .then(recipe => {
+        res.render('recipes/recipe-details', recipe);
+    })
+    .catch(err => {
+        console.log('error getting recipe details from DB', err);
+        next(err);
+    });
+  });
 
 
 router.get('/comment/:id', (req, res) => {

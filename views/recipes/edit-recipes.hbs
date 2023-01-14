@@ -1,8 +1,8 @@
 <h1>Edit a recipe</h1>
 
-<form action="/recipes/{{id}}/update" method="POST"  enctype="multipart/form-data">
+<form action="/recipes/{{ id }}/edit" method="POST"  enctype="multipart/form-data">
   <label for="">Update image</label>
-  <input type="file" name="imageUrl" id="" value="{{imageUrl}}">
+  <input type="file" name="imageUrl" id="" value="{{ imageUrl }}">
   
   <label for="">Recipe Name</label>
   <input type="text" name="name" id="" value="{{ recipeName }}">
@@ -17,10 +17,10 @@
   <input type="text" name="name" id="" value="{{ created date }}">
   
   <label for="">Ingredients</label>
-  <textarea name="ingredients" id="" cols="30" rows="10" value="{{ingredients}}"></textarea>
+  <textarea name="ingredients" id="" cols="30" rows="10" value="{{ ingredients }}"></textarea>
   
   <label for="">instructions</label>
-  <textarea name="instruction" id="" cols="30" rows="10" value="{{instruction}}"></textarea>
+  <textarea name="instruction" id="" cols="30" rows="10" value="{{ instructions }}"></textarea>
 
   
 

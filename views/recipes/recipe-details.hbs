@@ -1,26 +1,16 @@
 <div>
-
-    <div>
-
-        {{#each title}}
+  <div >
+    <img  src="{{ recipe.Recipeimage }}" alt="" width="300">
+      <div>
+        <h3>{{ recipe.title }}</h3>
+        <p>by {{ recipe.creator }}</p>
+        <h4>Ingredients</h4>
+        <p>{{ingredients}}</p>
+        <h4>Instructions</h4>
+        <p>{{instructions}}</p>
         <div>
-            <div >
-                <img  src="{{image_url}}" alt="" width="300">
-                <div>
-                <h3>{{recipeName}}</h3>
-                <ul>
-            <li>{{ cook time }}</li>
-            <li>{{ creator }}</li>
-            <li>{{ created date }}</li>
-                </ul>
-             <p>{{ingredients}}</p>
-            <p>{{instructions}}</p>
-                 <div>
-                </div>
-            </div>
-        </div>
-        {{/each}}
-     </div>
+   </div>
+ </div>
 
 
      {{!-- if there are comments, show them, if not, forget about it 🙃 --}}
