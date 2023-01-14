@@ -54,8 +54,8 @@ router.get('/recipes/search', isLoggedIn,  (req, res) => {
 // });
 
 //UPDATE: process form
-router.get('/recipes/:recipeId/edit', (req, res) => {
-    const { recipeId } = req.params.recipeId;
+router.get('/recipes/:id/edit', (req, res) => {
+    const { recipeId } = req.params.id;
     // const loggedInNavigation = req.session.hasOwnProperty('currentUser'); 
 
     Recipe.findById(recipeId)
