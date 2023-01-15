@@ -100,7 +100,7 @@ router.post("/login", isLoggedOut, (req, res, next) => {
       res.render('auth/login', { errorMessage: 'Incorrect credentials' });
     } else if (bcrypt.compareSync(password, user.password)) {
       req.session.currentUser = user;
-      res.redirect('profile');
+      res.redirect('/profile');
       //const loggedInUserId = req.session.currentUser._id
       //res.redirect(`/chefs/${user.id}`)
     } else {
