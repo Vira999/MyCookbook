@@ -1,17 +1,11 @@
 <h1>Recipes in our database:</h1>
 
-<form method="GET" action="/recipes/search" >
-    <input name="recipeName" type="text">
-    <button type="submit">Search Recipe</button>
-</form>
-
 <ul>
     {{#each recipes}}
     <li> 
         <a href="/recipes/{{_id}}">{{title}}</a>
-        <a href="/recipes/{{_id}}" class="">Details</a>
-        <a href="/recipes/{{_id}}/edit" class="">Edit</a>
-        <a href="/recipes/{{_id}}/delete" class="">Delete</a>
+        <a href="/recipes/{{_id}}" class="">See Details</a>
+        <a href="/recipes/{{_id}}/edit" class="">Edit Recipe</a>
     </li>
     {{/each}}
 </ul>

@@ -1,30 +1,20 @@
 <div>
-
-    <div>
-
-        {{#each title}}
+  <div >
+    <img  src='{{ recipeImage }}' alt="" width="300">
+      <div>
+        <h3>{{ title }}</h3>
+        <p>by {{ creator }}</p>
+        <h4>Ingredients</h4>
+        <p>{{ ingredients }}</p>
+        <h4>Instructions</h4>
+        <p>{{ instructions }}</p>
         <div>
-            <div >
-                <img  src="{{image_url}}" alt="" width="300">
-                <div>
-                <h3>{{recipeName}}</h3>
-                <ul>
-            <li>{{ cook time }}</li>
-            <li>{{ creator }}</li>
-            <li>{{ created date }}</li>
-                </ul>
-             <p>{{ingredients}}</p>
-            <p>{{instructions}}</p>
-                 <div>
-                </div>
-            </div>
-        </div>
-        {{/each}}
-     </div>
+   </div>
+ </div>
 
 
      {{!-- if there are comments, show them, if not, forget about it 🙃 --}}
-{{#if changeableComments}}
+{{!-- {{#if changeableComments}}
   <h3>git add</h3>
   {{#each changeableComments}}
   <div style="display: flex;">
@@ -40,18 +30,19 @@
   {{/each}}
 {{/if}}
 
-<hr>
+<hr> --}}
 {{!-- USER CAN NOT LEAVE COMMENTS ON THEIR OWN PROPERTIES --}}
 {{!-- this means that only if the user IS NOT the owner, this form will be shown --}}
-{{#if isNotOwner}}
+{{!-- {{#if isNotOwner}}
   <h2>Add a comment:</h2>
   <form action="/comment/create/{{recipe._id}}" method="POST">
     <textarea name="comment" id="" cols="10" rows="5"></textarea>
     <button type="submit">Add</button>
   </form>
 </div>
-{{/if}}
+{{/if}} --}}
     <hr>
-    <a href="/">Back to Home page</a>
-     <a href="/recipes/{{_id}}/edit" class="">Edit</a>
+    <a href="/recipes">Back to All Recipes</a>
+     <a href="/recipes/{{ _id }}/edit" class="">Edit</a>
+     <form action="/recipes/{{ _id }}/delete" method="POST" class=""><button>Delete Recipe</button></form>
 </div>

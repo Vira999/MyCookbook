@@ -14,9 +14,9 @@ const recipeSchema = new Schema({
 },
 
   
-  Recipeimage: {
+  recipeImage: {
     type: String,
-    required: false,
+    default: '../images/fooddefault.png',
   },
 
   instructions: {type: String, required: true },

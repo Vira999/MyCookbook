@@ -1,5 +1,9 @@
 <div>
-    <h2 id="welcome"> Welcome, {{ user.username }}!</h2>
+    <div>
+        <h2 id="welcome"> Welcome, {{ user.username }}!</h2>
+        <img src="{{ user.profileImage }}" alt="{{ user.username }}" width="300">
+    </div>
+    
     <p>Something about you: <br> {{ user.userBio }}</p>
     <br>
     <div>
@@ -12,11 +16,17 @@
 </div>
 <br>
 
+
 <div class="grid">
     {{#each user.userRecipes}}
     <div style="background-image: {{ this.image }}">
         <h4>{{ this.title }}</h4>
-        <a href="/recipes/:recipeId">Read Recipe</a>
+        <a href=`/recipes/{{ this.id }}`>Read Recipe</a>
     </div>
     {{/each}}
+</div>
+
+
+<div>
+    <form action="/logout" method="POST" class=""><button>Logout 👋</button></form>
 </div>

@@ -1,28 +1,22 @@
-<h1>Edit a recipe</h1>
+<h1>Edit the {{ title }} recipe</h1>
 
-<form action="/recipes/{{id}}/update" method="POST"  enctype="multipart/form-data">
+<form action="/recipes/{{ id }}/edit" method="POST"  enctype="multipart/form-data">
   <label for="">Update image</label>
-  <input type="file" name="imageUrl" id="" value="{{imageUrl}}">
+  <input type="file" name="recipeImage" id="" value="{{ recipeImage }}">
   
   <label for="">Recipe Name</label>
-  <input type="text" name="name" id="" value="{{ recipeName }}">
-
-  <label for="">cook time</label>
-  <input type="text" name="name" id="" value="{{ cook time }}">
+  <input type="text" name="title" id="" value="{{ title }}">
 
   <label for="">creator</label>
-  <input type="text" name="name" id="" value="{{ creator }}">
-
-  <label for="">created date</label>
-  <input type="text" name="name" id="" value="{{ created date }}">
+  <input type="text" name="creator" id="" value="{{ creator }}">
   
   <label for="">Ingredients</label>
-  <textarea name="ingredients" id="" cols="30" rows="10" value="{{ingredients}}"></textarea>
+  <textarea name="ingredients" id="" value="{{ ingredients }}" cols="30" rows="10">{{ ingredients }}</textarea>
   
   <label for="">instructions</label>
-  <textarea name="instruction" id="" cols="30" rows="10" value="{{instruction}}"></textarea>
+  <textarea name="instructions" id=""  value="{{ instructions }}"cols="30" rows="10">{{ instructions }}</textarea>
 
   
 
-  <button type="submit">Create recipe</button>
+  <button type="submit">Update recipe</button>
 </form>

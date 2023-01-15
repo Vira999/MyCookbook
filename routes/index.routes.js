@@ -14,14 +14,14 @@ router.get("/", (req, res) => {
 // });
   Recipe
   .find()
-  .populate("title creator image")
-  .populate({
-    path: 'creator',
-    populate:{
-      path: 'username',
-      model: 'User',
-    }
-  })
+  // .populate("title creator image")
+  // .populate({
+  //   path: 'creator',
+  //   populate:{
+  //     path: 'username',
+  //     model: 'User',
+  //   }
+  // })
   .then(recipes => {
     res.render("index", { recipes })
   })

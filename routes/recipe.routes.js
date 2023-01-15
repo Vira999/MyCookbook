@@ -7,86 +7,64 @@ const fileUploader = require("../config/cloudinary.config");
 
 const Recipe = require('../models/Recipe.model');
 const Comment = require('../models/Comment.model'); 
+const User = require('../models/User.model');
 
 
 //CREATE: display form
-router.get('/recipes/create', (req, res, next) => {
+router.get('/recipes/create', isLoggedIn, (req, res, next) => {
     res.render('recipes/create-recipes');
 });
 
 router.post('/recipes/create', (req, res) => {
     console.log(req.body)
     const { title, creator, ingredients, instructions } = req.body;
-        // //  time,
-        // // date,
-        // creator,
-        // //recipeImage,
-        // ingredients,
-        // instructions } = req.body;
     
    Recipe
         .create({ title, creator, ingredients, instructions })
-        .then((recipe) => res.redirect(`${recipe._id}`))
-        .catch(err => console.log(err))
-});
-
-router.get('/recipes/search', isLoggedIn,  (req, res) => {
-    const { recipeName } = req.query;
-
-   Recipe.findOne({title: recipeName})
-        .then(foundByRecipe => {
-            res.render('recipes/recipe-details', {singleRecipe: foundByRecipe})
+        .then((recipe) => {
+            res.redirect(`${recipe._id}`)
+            //return User.findByIdAndUpdate(creatorId, { $push: {userRecipes: recipe._id } });
         })
         .catch(err => console.log(err))
 });
 
-//READ: Recipe details
-router.get('/recipes/:recipeId', (req, res, next) => {
-  const id = req.params.recipeId;
+//UPDATE: recipe form
+router.get('/recipes/:recipeId/edit', isLoggedIn, (req, res, next) => {
+    const id = req.params.recipeId;
 
-  Recipe.findById(id)
-  .then(recipeDetails => {
-      res.render('recipes/recipe-details', recipeDetails);
-  })
-  .catch(err => {
-      console.log('error getting recipe details from DB', err);
-      next(err);
-  });
-});
-
-// router.get('/:recipeId', isLoggedIn, (req, res) => {
-//     const { recipeId } = req.params;
-   
-//     Recipe.findById(recipeId)
-//         .then(recipeFound => {
-//             console.log('recipeFound', recipeFound)
-//             res.render('/recipes', {singleRecipe: recipeFound})
-//         })
-//         .catch(err => console.log(err))
-// });
-
-//UPDATE: process form
-router.get('/recipes/:recipeId/edit', isLoggedIn, (req, res) => {
-    const loggedInNavigation = req.session.hasOwnProperty('currentUser'); 
-    res.render('recipes/edit-recipes', {loggedInNavigation})
-})
-
-router.post('/recipes/:recipeId/edit', isLoggedIn, fileUploader.single('recipe-image'), (req, res, next) => {
-    const { recipeId } = req.params;
-    let { recipeName, cookTime, recipeImage, instruction, ingredients } = req.body;
-  
-    Recipe.findByIdAndUpdate(recipeId, { recipeName, cookTime, recipeImage, instruction, ingredients}, {new: true})
-    .then(() => {
-        res.redirect(`/recipes/${recipeId}`);
+    Recipe.findById(id)
+    .then(recipe => {
+        res.render('recipes/edit-recipes', recipe)
     })
     .catch(err => {
-        console.log('error deleting recipe', err);
+        console.log('error getting recipe details edit page from DB', err);
+        next(err);
+    });
+})
+
+router.post('/recipes/:recipeId/edit', fileUploader.single('recipeImage'), (req, res, next) => {
+    const id = req.params.recipeId;
+    const { title, recipeImage, instructions, creator, ingredients } = req.body;
+    let imageUrl;
+
+    if (req.file){
+        imageUrl = req.file.path;
+    } else {
+        imageUrl = recipeImage;
+    }
+  
+    Recipe.findByIdAndUpdate(id, { title, recipeImage: imageUrl, instructions, creator, ingredients }, { new: true })
+    .then(() => {
+        res.redirect(`/recipes/${id}`);
+    })
+    .catch(err => {
+        console.log('error editing recipe', err);
     });
 });
 
 
-//DELETE FROM PAGE
-router.post('/recipes/:recipeId/delete', isLoggedIn, (req, res, next) => {
+//DELETE  RECIPE FROM PAGE
+router.post('/recipes/:recipeId/delete', (req, res, next) => {
     Recipe.findByIdAndDelete(req.params.recipeId)
     .then(() => {
         res.redirect('/recipes');
@@ -96,6 +74,20 @@ router.post('/recipes/:recipeId/delete', isLoggedIn, (req, res, next) => {
         next();
     });
 });
+
+//READ: Recipe details
+router.get('/recipes/:recipeId', (req, res, next) => {
+    const id = req.params.recipeId;
+  
+    Recipe.findById(id)
+    .then(recipe => {
+        res.render('recipes/recipe-details', recipe);
+    })
+    .catch(err => {
+        console.log('error getting recipe details from DB', err);
+        next(err);
+    });
+  });
 
 
 router.get('/comment/:id', (req, res) => {
