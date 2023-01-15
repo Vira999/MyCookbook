@@ -7,10 +7,11 @@ const fileUploader = require("../config/cloudinary.config");
 
 const Recipe = require('../models/Recipe.model');
 const Comment = require('../models/Comment.model'); 
+const User = require('../models/User.model');
 
 
 //CREATE: display form
-router.get('/recipes/create', (req, res, next) => {
+router.get('/recipes/create', isLoggedIn, (req, res, next) => {
     res.render('recipes/create-recipes');
 });
 
@@ -20,22 +21,15 @@ router.post('/recipes/create', (req, res) => {
     
    Recipe
         .create({ title, creator, ingredients, instructions })
-        .then((recipe) => res.redirect(`${recipe._id}`))
-        .catch(err => console.log(err))
-});
-
-router.get('/recipes/search', isLoggedIn,  (req, res) => {
-    const { recipeName } = req.query;
-
-   Recipe.findOne({title: recipeName})
-        .then(foundByRecipe => {
-            res.render('recipes/recipe-details', {singleRecipe: foundByRecipe})
+        .then((recipe) => {
+            res.redirect(`${recipe._id}`)
+            //return User.findByIdAndUpdate(creatorId, { $push: {userRecipes: recipe._id } });
         })
         .catch(err => console.log(err))
 });
 
 //UPDATE: recipe form
-router.get('/recipes/:recipeId/edit', (req, res, next) => {
+router.get('/recipes/:recipeId/edit', isLoggedIn, (req, res, next) => {
     const id = req.params.recipeId;
 
     Recipe.findById(id)

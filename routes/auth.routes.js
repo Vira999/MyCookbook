@@ -9,7 +9,7 @@ const isLoggedOut = require('../middleware/isLoggedOut');
 const isLoggedIn = require('../middleware/isLoggedIn');
 
 /* GET Signup page */
-router.get('/signup', (req, res, next) => {
+router.get('/signup', isLoggedOut, (req, res, next) => {
   res.render('auth/signup')
 })
 
