@@ -95,9 +95,21 @@ router.get("/edit-profile", (req, res) => {
     }
    });
 
+   router.post('/delete-profile', (req, res, next) => {
+    userId = req.session.currentUser._id
+    User.findByIdAndDelete(userId)
+    .then(() => {
+        res.redirect('/');
+    })
+    .catch(err => {
+        console.log('error deleting user', err);
+        next();
+    });
+});
 
 
-   router.get("/", (req, res) => {
+
+   router.get("/chefs", (req, res) => {
     User.find()
     .then (allChefs => res.render('chefs/chefs', { chefs: allChefs }))
     .catch(err => res.send(err))
