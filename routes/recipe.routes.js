@@ -90,7 +90,7 @@ router.post('/recipes/:recipeId/edit', fileUploader.single('recipeImage'), (req,
 
 
 //DELETE FROM PAGE
-router.post('/recipes/:recipeId/delete', isLoggedIn, (req, res, next) => {
+router.post('/recipes/:recipeId/delete', (req, res, next) => {
     Recipe.findByIdAndDelete(req.params.recipeId)
     .then(() => {
         res.redirect('/recipes');
