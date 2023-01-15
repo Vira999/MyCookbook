@@ -58,12 +58,12 @@ router.get("auth/profile", async (req, res, next) => {
 
   /* GET EDIT profile */
 router.get("/edit-profile", (req, res) => {
-  const chefId = req.session.currentUser._id;
+  const id = req.session.currentUser._id;
   //const loggedInUserId = req.session?.currentUser?._id;
   //const isSameChef = loggedInUserId === chefId;
 
   User
-  .findById(chefId)
+  .findById(id)
   .then((chef) => {
     res.render("edit-profile",  chef)
   })
