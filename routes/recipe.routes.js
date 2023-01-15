@@ -54,26 +54,37 @@ router.get('/recipes/search', isLoggedIn,  (req, res) => {
 // });
 
 //UPDATE: process form
-router.get('/recipes/:id/edit', (req, res) => {
-    const { recipeId } = req.params.id;
+router.get('/recipes/:recipeId/edit', (req, res, next) => {
+    const id = req.params.recipeId;
     // const loggedInNavigation = req.session.hasOwnProperty('currentUser'); 
 
-    Recipe.findById(recipeId)
+    Recipe.findById(id)
     .then(recipe => {
-        res.render('recipes/edit-recipes', {recipe})
-    })
-})
-
-router.post('/recipes/:recipeId/edit', isLoggedIn, fileUploader.single('recipe-image'), (req, res, next) => {
-    const { recipeId } = req.params;
-    let { recipeName, cookTime, recipeImage, instruction, ingredients } = req.body;
-  
-    Recipe.findByIdAndUpdate(recipeId, { recipeName, cookTime, recipeImage, instruction, ingredients}, {new: true})
-    .then(() => {
-        res.redirect(`/recipes/${recipeId}`);
+        res.render('recipes/edit-recipes', recipe)
     })
     .catch(err => {
-        console.log('error deleting recipe', err);
+        console.log('error getting recipe details edit page from DB', err);
+        next(err);
+    });
+})
+
+router.post('/recipes/:recipeId/edit', fileUploader.single('recipeImage'), (req, res, next) => {
+    const id = req.params.recipeId;
+    const { title, recipeImage, instructions, creator, ingredients } = req.body;
+    let imageUrl;
+
+    if (req.file){
+        imageUrl = req.file.path;
+    } else {
+        imageUrl = recipeImage;
+    }
+  
+    Recipe.findByIdAndUpdate(id, { title, recipeImage: imageUrl, instructions, creator, ingredients }, { new: true })
+    .then(() => {
+        res.redirect(`/recipes/${id}`);
+    })
+    .catch(err => {
+        console.log('error editing recipe', err);
     });
 });
 
