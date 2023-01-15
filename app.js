@@ -34,7 +34,7 @@ const authRoutes = require("./routes/auth.routes");
 app.use("/auth", authRoutes);
 
 const chefRoutes = require("./routes/chef.routes");
-app.use("/chefs", chefRoutes);
+app.use("/", chefRoutes);
 
 const recipeRoutes = require("./routes/recipe.routes");
 app.use("/", recipeRoutes);

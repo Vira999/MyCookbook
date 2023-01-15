@@ -8,9 +8,10 @@ const isSameChef = require('../middleware/isSameChef');
 const fileUploader = require("../config/cloudinary.config");
 const router = express.Router();
 
-router.get("/:id", async (req, res, next) => {
+router.get("auth/profile", async (req, res, next) => {
     //const userId = req.session.currentUser._id
-    const userId = req.params.id
+    const user = session.currentUser
+    const userId = user._id
     console.log(`userID ==> ${userId}`)
   
     User
@@ -56,7 +57,7 @@ router.get("/:id", async (req, res, next) => {
   //});
 
   /* GET EDIT profile */
-router.get("/:id/edit", (req, res) => {
+router.get("/edit-profile", (req, res) => {
   const chefId = req.session.currentUser._id;
   //const loggedInUserId = req.session?.currentUser?._id;
   //const isSameChef = loggedInUserId === chefId;
@@ -64,26 +65,33 @@ router.get("/:id/edit", (req, res) => {
   User
   .findById(chefId)
   .then((chef) => {
-    res.render("edit-profile", { chef })
+    res.render("edit-profile",  chef)
   })
 })
 
-  router.post("/:id/edit", fileUploader.single("imageUrl"), (req, res) => {
-    const chefId = req.params.id;
-    const loggedInUserId = req.session?.currentUser?._id;
-    const isSameChef = loggedInUserId === chefId;
-    const { firstName, lastName, username, userBio }  = req.body;
-    const { path } = req.file;
+  router.post("/edit-profile", fileUploader.single("profileImage"), (req, res) => {
+    // const chefId = req.params.id;
+    // const loggedInUserId = req.session?.currentUser?._id;
+    // const isSameChef = loggedInUserId === chefId;
+    const userId = req.session.currentUser._id
+    const { firstName, lastName, username, userBio, profileImage }  = req.body;
+    let imgUrl;
 
-    if(isSameChef){
-      User.findByIdAndUpdate(chefId, { firstName, lastName, username, userBio, profileImage: path }, {new:true})
+    if (req.file){
+      imgUrl = req.file.path;
+    } else {
+      imgUrl = profileImage;
+    }
+
+    if(userId){
+      User.findByIdAndUpdate(userId, { firstName, lastName, username, userBio, profileImage: imgUrl }, {new:true})
         .then(() => {
-          res.redirect('/chefs')
+          res.redirect('/auth/profile')
         })
         .catch(err => console.error(err))
     }
     else {
-      res.redirect(`/chefs/${chefId}`)
+      res.redirect('/auth/profile')
     }
    });
 

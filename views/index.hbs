@@ -12,7 +12,7 @@
 <div class="grid">
     {{#each recipes}}
     <div><a href="/recipes/{{this._id}}">
-        <img src= {{ this.image }}>
+        <img src="{{ this.recipeImage }}" alt="{{ this.title }}" height="150px">
         <h4>{{ this.title }}</h4>
         <p>by {{ this.creator }}</p>
     </a></div>

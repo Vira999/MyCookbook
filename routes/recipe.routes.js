@@ -17,12 +17,6 @@ router.get('/recipes/create', (req, res, next) => {
 router.post('/recipes/create', (req, res) => {
     console.log(req.body)
     const { title, creator, ingredients, instructions } = req.body;
-        // //  time,
-        // // date,
-        // creator,
-        // //recipeImage,
-        // ingredients,
-        // instructions } = req.body;
     
    Recipe
         .create({ title, creator, ingredients, instructions })
@@ -40,23 +34,9 @@ router.get('/recipes/search', isLoggedIn,  (req, res) => {
         .catch(err => console.log(err))
 });
 
-
-
-// router.get('/:recipeId', isLoggedIn, (req, res) => {
-//     const { recipeId } = req.params;
-   
-//     Recipe.findById(recipeId)
-//         .then(recipeFound => {
-//             console.log('recipeFound', recipeFound)
-//             res.render('/recipes', {singleRecipe: recipeFound})
-//         })
-//         .catch(err => console.log(err))
-// });
-
-//UPDATE: process form
+//UPDATE: recipe form
 router.get('/recipes/:recipeId/edit', (req, res, next) => {
     const id = req.params.recipeId;
-    // const loggedInNavigation = req.session.hasOwnProperty('currentUser'); 
 
     Recipe.findById(id)
     .then(recipe => {
@@ -89,7 +69,7 @@ router.post('/recipes/:recipeId/edit', fileUploader.single('recipeImage'), (req,
 });
 
 
-//DELETE FROM PAGE
+//DELETE  RECIPE FROM PAGE
 router.post('/recipes/:recipeId/delete', (req, res, next) => {
     Recipe.findByIdAndDelete(req.params.recipeId)
     .then(() => {

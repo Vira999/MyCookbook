@@ -1,6 +1,7 @@
 <div id="form">
   <h2>Edit your profile, {{ this.username }}</h2>
-  <form action="/edit-profile" method="POST">
+  <div>
+    <form action="/edit-profile" method="POST">
 
     <label> First Name
       <input type="text" name="firstName" placeholder="{{this.firstName}}" />
@@ -15,7 +16,7 @@
     </label>
 
     <label for="">Update image</label>
-     <input type="file" name="profileImage" id="" value="{{this.profileImage}}">
+     <input type="file" name="profileImage" value="{{this.profileImage}}">
 
     <label> Bio
     {{#if this.userBio}}
@@ -32,4 +33,6 @@
       <p class="error">{{errorMessage}}</p>
     {{/if}}
   </form>
+  </div>
+  <div></div>
 </div>
