@@ -36,6 +36,7 @@ router.post("/signup", async (req, res, next) => {
   User
   .create({ firstName, lastName, username, email, password: passwordHash })
   .then((user) => {
+    req.session.currentUser = user;
     res.render('user-profile', {user})
   })
   .catch(error => {
