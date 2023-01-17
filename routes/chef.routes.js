@@ -57,7 +57,7 @@ router.get("/user-profile", isLoggedIn, async (req, res) => {
   //});
 
   /* GET EDIT profile */
-router.get("/edit-profile", (req, res) => {
+router.get("/edit-profile", isLoggedIn, (req, res) => {
   const id = req.session.currentUser._id;
   //const loggedInUserId = req.session?.currentUser?._id;
   //const isSameChef = loggedInUserId === chefId;
