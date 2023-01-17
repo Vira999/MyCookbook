@@ -14,7 +14,7 @@ router.get('/signup', isLoggedOut, (req, res, next) => {
 })
 
 /* POST Signup page */
-router.post("/signup", isLoggedOut, async (req, res, next) => {
+router.post("/signup", async (req, res, next) => {
   const { firstName, lastName, username, email, password } = req.body;
 
   if(!firstName || !lastName || !username || !email || !password) {
@@ -36,9 +36,7 @@ router.post("/signup", isLoggedOut, async (req, res, next) => {
   User
   .create({ firstName, lastName, username, email, password: passwordHash })
   .then((user) => {
-
-    res.render('/profile', { user })
-
+    res.render('user-profile', {user})
   })
   .catch(error => {
     if (error instanceof mongoose.Error.ValidationError) {
@@ -55,7 +53,7 @@ router.post("/signup", isLoggedOut, async (req, res, next) => {
 });
 
 /* GET User Profile page */
-router.get("/profile", isLoggedIn, (req, res) => {
+router.get("/user-profile", isLoggedIn, (req, res) => {
     const currentUserId = req.session?.currentUser?._id;
 
     User
@@ -72,7 +70,8 @@ router.get("/profile", isLoggedIn, (req, res) => {
       // }
     })
     .then((user) => {
-      res.render("user-profile", { user })
+      
+      res.render("user-profile", {user})
     })
 });
 
@@ -100,7 +99,7 @@ router.post("/login", isLoggedOut, (req, res, next) => {
       res.render('auth/login', { errorMessage: 'Incorrect credentials' });
     } else if (bcrypt.compareSync(password, user.password)) {
       req.session.currentUser = user;
-      res.redirect('/profile');
+      res.redirect('/user-profile');
       //const loggedInUserId = req.session.currentUser._id
       //res.redirect(`/chefs/${user.id}`)
     } else {
