@@ -8,10 +8,10 @@ const isSameChef = require('../middleware/isSameChef');
 const fileUploader = require("../config/cloudinary.config");
 const router = express.Router();
 
-router.get("auth/profile", async (req, res, next) => {
-    //const userId = req.session.currentUser._id
-    const user = session.currentUser
-    const userId = user._id
+router.get("/user-profile", isLoggedIn, async (req, res) => {
+    const userId = req.session.currentUser._id
+    // const user = session.currentUser
+    // const userId = user._id
     console.log(`userID ==> ${userId}`)
   
     User
@@ -28,7 +28,7 @@ router.get("auth/profile", async (req, res, next) => {
     //   }
     // })
     .then((user) => {
-      res.render("/profile", {user})
+      res.render("user-profile", {user})
     })
     .catch(error => console.log(error));
   });
@@ -86,12 +86,12 @@ router.get("/edit-profile", (req, res) => {
     if(userId){
       User.findByIdAndUpdate(userId, { firstName, lastName, username, userBio, profileImage: imgUrl }, {new:true})
         .then(() => {
-          res.redirect('/auth/profile')
+          res.redirect('auth/user-profile')
         })
         .catch(err => console.error(err))
     }
     else {
-      res.redirect('/auth/profile')
+      res.redirect('auth/user-profile')
     }
    });
 
